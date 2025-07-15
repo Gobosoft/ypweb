@@ -10,7 +10,7 @@ class Project(Base):
     __tablename__ = 'projects'
     id = Column(Integer, primary_key=True)
     year = Column(Integer, nullable=False, index=True)
-    name = Column(String, nullable=False)
+    name = Column(String(255), nullable=False)
 
     companies = relationship("Company", back_populates="project")
 
@@ -18,12 +18,12 @@ class Project(Base):
 class Company(Base):
     __tablename__ = 'companies'
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    business_id = Column(String, unique=True, index=True)  # Y-tunnus
-    booth_size = Column(String)
+    name = Column(String(255), nullable=False)
+    business_id = Column(String(50), unique=True, index=True)  # Y-tunnus
+    booth_size = Column(String(50))
     special_requests = Column(Text)
-    status = Column(String, index=True)  # e.g., 'confirmed', 'declined', etc.
-    display_name = Column(String, index=True)
+    status = Column(String(50), index=True)  # e.g., 'confirmed', 'declined', etc.
+    display_name = Column(String(255), index=True)
     project_id = Column(Integer, ForeignKey('projects.id'), index=True)
     coordinator_id = Column(Integer, ForeignKey('users.id'), index=True)
 
@@ -44,9 +44,9 @@ class Company(Base):
 class Contact(Base):
     __tablename__ = 'contacts'
     id = Column(Integer, primary_key=True)
-    name = Column(String, index=True)
-    email = Column(String)
-    phone = Column(String)
+    name = Column(String(255), index=True)
+    email = Column(String(255))
+    phone = Column(String(50))
     is_primary = Column(Boolean, default=False)
     company_id = Column(Integer, ForeignKey('companies.id'), index=True)
 
@@ -56,7 +56,7 @@ class Contact(Base):
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
-    name = Column(String, index=True)
+    name = Column(String(255), index=True)
     role = Column(Enum('AK', 'PP', 'IT', 'Finance', name='user_roles'), index=True)
 
     assigned_companies = relationship("Company", back_populates="coordinator")
@@ -75,7 +75,7 @@ class Comment(Base):
 class Order(Base):
     __tablename__ = 'orders'
     id = Column(Integer, primary_key=True)
-    product_name = Column(String, index=True)
+    product_name = Column(String(255), index=True)
     price = Column(Float)
     company_id = Column(Integer, ForeignKey('companies.id'), index=True)
 
@@ -85,7 +85,7 @@ class Order(Base):
 class Contract(Base):
     __tablename__ = 'contracts'
     id = Column(Integer, primary_key=True)
-    file_path = Column(String)
+    file_path = Column(String(255))
     is_returned = Column(Boolean, default=False, index=True)
     company_id = Column(Integer, ForeignKey('companies.id'), index=True)
 
@@ -95,8 +95,8 @@ class Contract(Base):
 class Material(Base):
     __tablename__ = 'materials'
     id = Column(Integer, primary_key=True)
-    type = Column(String, index=True)
-    file_path = Column(String)
+    type = Column(String(100), index=True)
+    file_path = Column(String(255))
     company_id = Column(Integer, ForeignKey('companies.id'), index=True)
 
     company = relationship("Company", back_populates="materials")
