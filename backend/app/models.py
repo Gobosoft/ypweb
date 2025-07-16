@@ -3,6 +3,7 @@ from sqlalchemy import (
     DateTime, Text, Float, Enum, Index
 )
 from sqlalchemy.orm import relationship, declarative_base
+from datetime import datetime, timezone
 
 Base = declarative_base()
 
@@ -57,7 +58,14 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     name = Column(String(255), index=True)
+    email = Column(String(120), nullable=False, unique=True)
+    password_hash = Column(String(150), nullable=False)
+    refresh_token = Column(String(300), index=True, nullable=True)
     role = Column(Enum('AK', 'PP', 'IT', 'Finance', name='user_roles'), index=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), 
+                        onupdate=lambda: datetime.now(timezone.utc), nullable=False)
+
 
     assigned_companies = relationship("Company", back_populates="coordinator")
 

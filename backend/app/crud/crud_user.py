@@ -68,12 +68,12 @@ def set_access_refresh_tokens_in_cookies(response: Response, access_token: str, 
     )
 
 async def register_user(db_session: AsyncSession, user_data: UserRegistrationModel) -> dict:
-    if not user_data.email or not user_data.password or not user_data.language:
-        raise HTTPException(status_code=400, detail="Email, password and language are required.")
+    if not user_data.email or not user_data.password or not user_data.name:
+        raise HTTPException(status_code=400, detail="Email, password and name are required.")
 
     hashed_password = hash_password(user_data.password)
-    new_user = User(email=user_data.email, password_hash=hashed_password, phone=user_data.phone,
-                    language=user_data.language, organization=user_data.organization)
+    new_user = User(email=user_data.email, password_hash=hashed_password,
+                    name=user_data.name, role="IT")
     db_session.add(new_user)
     await db_session.flush()  # Flush to retrieve any generated ids or data needed before commit
 
@@ -96,9 +96,12 @@ async def authenticate_user(db_session: AsyncSession, email: str, password: str)
     user = await get_user_by_email(db_session, email)
     if not user or not verify_password(password, user.password_hash):
         raise HTTPException(status_code=404, detail="Incorrect username or password")
+    # For now lets skip verification check
+    """
     if not user.is_verified:
         logger.info(f"User {email} has not verified their email.")
         raise HTTPException(status_code=401, detail="Email not verified. Please verify your email before logging in.")
+    """
     logger.info(f"User {email} authenticated.")
     return user
 

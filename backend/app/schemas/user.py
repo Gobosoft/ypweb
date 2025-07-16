@@ -4,6 +4,7 @@ import datetime
 from typing import Optional
 
 class UserRegistrationModel(BaseModel):
+    name: str
     email: EmailStr
     password: str
 
@@ -24,6 +25,7 @@ class UserRegistrationModel(BaseModel):
     class Config:
         schema_extra = {
             "example": {
+                "name": "Example User",
                 "email": "user@example.com",
                 "password": "strongPassword123!",
             }
@@ -32,6 +34,7 @@ class UserRegistrationModel(BaseModel):
 
 class UserResponseModel(BaseModel):
     id: int
+    name: str
     email: EmailStr
     created_at: Optional[datetime.datetime] = None
 
@@ -78,3 +81,9 @@ class UserSearchModel(BaseModel):
     role: Optional[str] = None
     results_per_page: int
     
+class UserStateData(BaseModel):
+    email: EmailStr
+    name: str
+
+class UserStateResponseModel(BaseModel):
+    userData: UserStateData

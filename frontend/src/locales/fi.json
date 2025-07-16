@@ -1,3 +1,7 @@
 {
-    "test": "testi"
+  "paths": {
+    "register": "rekisteroidu",
+    "login": "kirjaudu",
+    "mainscreen": "etusivu"
+  }
 }

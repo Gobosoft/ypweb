@@ -36,7 +36,8 @@ async def register(
         try:
             registration_result = await register_user(db_session=db, user_data=user_data)
             logger.info("Registration function completed")
-
+            # For now lets skip the email verification
+            """
             verification_token = generate_verification_token()
             logger.info(f"Generated verification token {verification_token}")
 
@@ -44,7 +45,7 @@ async def register(
 
             await set_verification_token(db, email, verification_token)
             logger.info("Verification token set")
-
+            """
             # if os.getenv("ENVIRONMENT") != "test":
                 # send_verification_email.delay(email, verification_token, language)
 
@@ -95,21 +96,6 @@ async def login_for_access_token(
         async with db as session:
             # Authenticate the user
             user = await authenticate_user(session, form_data.username, form_data.password)
-
-            # Check password age (6 months)
-            now = datetime.now(timezone.utc)
-            six_months_ago = now - timedelta(days=180)
-
-            password_last_changed = user.password_last_changed_at or user.created_at
-
-            if password_last_changed.date() <= six_months_ago.date():
-                # Send password change email
-                # await send_password_change_email(user, session)
-                await session.commit()
-                raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail="Password is too old. Please change your password."
-                )
 
             # Token creation and hashing the refresh token
             access_token = create_token(data={"sub": user.email}, token_type="access")
