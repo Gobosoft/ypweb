@@ -1,0 +1,50 @@
+version: '4'
+services:
+
+  backend:
+    tty: true
+    image: gobosoftdockerhub/backend:testing
+    build:
+      context: ../backend
+    command: >
+      /bin/bash -c "
+      while !</dev/tcp/mysql-db/3306; do sleep 1; done;
+      uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+      "
+    ports:
+      - "8000:8000"
+    networks:
+      - gobo-app
+    volumes:
+      - ../backend:/usr/src/app
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    env_file:
+      - ../backend/.env
+    restart: always
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: my-mysql-container
+    env_file:
+      - ../backend/.env
+    networks:
+      - gobo-app
+    ports:
+      - "3306:3306"
+    volumes:
+      - my-mysql-db:/var/lib/mysql
+    restart: always
+    healthcheck:
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'mysql-db']
+      timeout: 5s
+      retries: 10
+
+networks:
+  gobo-app:
+    driver: bridge
+volumes:
+  my-mysql-db:
+  redis_data:
+    driver: local

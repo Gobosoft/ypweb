@@ -7,9 +7,7 @@ from app.crud.crud_user import (
     authenticate_user, verify_refresh_token_and_get_user, register_user,
     create_token, login_required, hash_token, set_access_refresh_tokens_in_cookies,
     generate_verification_token, set_verification_token, verify_user, get_user_by_token,
-    get_user_by_email, change_user_password, set_password_change_token,
-    get_user_by_password_change_token, verify_password_change_token,
-    get_user_language, verify_hcaptcha
+    get_user_by_email,
 )
 from app.db.session import get_db
 from app.models import User
@@ -21,6 +19,9 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+@router.get("/moi")
+async def moi():
+    return {"moi": "1"}
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 # @limiter.limit("2/minute")
@@ -31,14 +32,6 @@ async def register(
     db: AsyncSession = Depends(get_db)):
     logger.info("Starting registration process")
 
-    if os.getenv("ENVIRONMENT") != "test":
-        try:
-            # Verify hCaptcha token
-            hcaptcha_token = user_data.hcaptcha
-            await verify_hcaptcha(hcaptcha_token)
-        except HTTPException as e:
-            raise e
-
     async with db.begin():
         try:
             registration_result = await register_user(db_session=db, user_data=user_data)
@@ -48,7 +41,6 @@ async def register(
             logger.info(f"Generated verification token {verification_token}")
 
             email = registration_result['user'].email
-            language = registration_result['user'].language
 
             await set_verification_token(db, email, verification_token)
             logger.info("Verification token set")
@@ -235,38 +227,6 @@ async def change_password_mailer(
         except Exception as e:
             logger.error(f"Unhandled exception: {str(e)}")
             raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
-
-
-@router.post("/change-password/{token}")
-async def handle_password_change(
-    request: Request, 
-    token: str,
-    password_data: ChangePasswordSchema = Body(...),
-    db: AsyncSession = Depends(get_db)
-    ):
-    try:
-        password = password_data.password
-        user_by_token = await get_user_by_password_change_token(db, token)
-        if not user_by_token:
-            logger.info("User not found by token")
-            raise HTTPException(status_code=401, detail="Invalid or expired token")
-
-        verified_user_token = await verify_password_change_token(user=user_by_token)
-        if not verified_user_token:
-            logger.info("Token not verified")
-            raise HTTPException(status_code=404, detail="Token expired and cleared")
-        
-        user = await change_user_password(db_session=db, user_id=user_by_token.id, password=password)
-        if (user is None):
-            raise HTTPException(status_code=404, detail="User not found")
-        
-        return {"message": "Password changed successfully"}
-    except HTTPException as e:
-        logger.error(f"HTTP exception: {str(e)}")
-        raise e
-    except Exception as e:
-        logger.error(f"Unhandled exception: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 
 @router.post("/resend-verification")

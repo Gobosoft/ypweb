@@ -20,7 +20,6 @@ SECRET_KEY = settings.SECRET_KEY
 ALGORITHM = settings.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 REFRESH_TOKEN_EXPIRE_DAYS = settings.REFRESH_TOKEN_EXPIRE_DAYS
-HCAPTCHA_SECRET_KEY = settings.HCAPTCHA_SECRET_KEY
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -209,3 +208,33 @@ async def set_verification_token(db_session: AsyncSession, user_email: str, toke
         await db_session.rollback()
         logger.error(f"Failed to set verification token: {e}")
         raise e
+    
+async def verify_user(user: User):
+    token_lifetime = timedelta(hours=24)  # Token expires after 24 hours
+    current_time = datetime.now(timezone.utc)  # Ensure current_time is timezone-aware
+
+    if user.email_token_created_at.tzinfo is None:
+        user.email_token_created_at = user.email_token_created_at.replace(tzinfo=timezone.utc)
+
+    if user and (current_time - user.email_token_created_at < token_lifetime):
+        user.is_verified = True
+        user.email_verification_token = None  # Clear the token after verification
+        user.email_token_created_at = None
+        return user
+    elif user:  # Handle expired token
+        user.email_verification_token = None
+        user.email_token_created_at = None
+    return None
+
+
+async def get_user_by_token(db_session: AsyncSession, token: str):
+    result = await db_session.execute(
+        select(User).filter(User.email_verification_token == token)
+    )
+    return result.scalars().one_or_none()
+
+async def get_user_by_id(db_session: AsyncSession, id: int):
+    result = await db_session.execute(
+        select(User).filter(User.id == id)
+    )
+    return result.scalars().one_or_none()
