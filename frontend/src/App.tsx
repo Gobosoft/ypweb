@@ -9,6 +9,7 @@ import Navbar from './components/Navbar/Navbar'
 import LoginForm from './components/Login/LoginForm'
 import UserProvider from './context/UserProvider'
 import RegisterView from './views/Register/RegisterView'
+import SingleCompanyView from './views/SingleCompany/SingleCompanyView'
 
 function App() {
   const { t } = useTranslation()
@@ -35,6 +36,10 @@ function App() {
           />
           <Route path={t('paths.mainscreen')} element={<MainScreenView />} />
           <Route path={t('paths.register')} element={<RegisterView />} />
+          <Route
+            path={`${t('paths.singleCompany')}/:id`}
+            element={<SingleCompanyView />}
+          />
         </Route>
       </Routes>
       <ToastContainer />
