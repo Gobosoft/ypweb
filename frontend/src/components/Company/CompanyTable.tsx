@@ -8,20 +8,20 @@ import {
   TableHeader,
   TableRow,
 } from 'src/components/ui/table'
+import { Company } from 'src/lib/types'
+import SmallLoadingCircleOnly from 'src/components/Loading/SmallLoadingCircle'
 
-const CompanyTable = () => {
+interface Props {
+  companies: Company[]
+  loading: boolean
+}
+
+const CompanyTable = ({ companies, loading }: Props) => {
   const navigate = useNavigate()
 
-  const companies = [
-    {
-      id: 'codenest-labs',
-      name: 'CodeNest Labs',
-      contact: 'Kyllä',
-      material: 'Kyllä',
-      registered: '-',
-      returned: 'Kyllä',
-    },
-  ]
+  if (loading) {
+    return <SmallLoadingCircleOnly />
+  }
 
   return (
     <div className="space-y-4">
@@ -36,21 +36,32 @@ const CompanyTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {companies.map((company) => (
-            <TableRow
-              key={company.id}
-              className="hover:bg-muted cursor-pointer"
-              onClick={() =>
-                navigate(`/${i18n.t('paths.singleCompany')}/${company.id}`)
-              }
-            >
-              <TableCell>{company.name}</TableCell>
-              <TableCell>{company.contact}</TableCell>
-              <TableCell>{company.material}</TableCell>
-              <TableCell>{company.registered}</TableCell>
-              <TableCell>{company.returned}</TableCell>
+          {companies.length === 0 ? (
+            <TableRow>
+              <TableCell
+                colSpan={5}
+                className="text-center text-muted-foreground"
+              >
+                Ei yrityksiä
+              </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            companies.map((company) => (
+              <TableRow
+                key={company.id}
+                className="hover:bg-muted cursor-pointer"
+                onClick={() =>
+                  navigate(`/${i18n.t('paths.singleCompany')}/${company.id}`)
+                }
+              >
+                <TableCell>{company.name}</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </div>
