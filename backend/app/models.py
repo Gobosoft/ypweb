@@ -1,8 +1,9 @@
 from sqlalchemy import (
     Column, Integer, String, Boolean, ForeignKey,
-    DateTime, Text, Float, Enum, Index
+    DateTime, Text, Float, Enum, Index, Date,
+    event
 )
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy.orm import relationship, declarative_base, Session
 from datetime import datetime, timezone
 
 Base = declarative_base()
@@ -86,8 +87,10 @@ class Order(Base):
     product_name = Column(String(255), index=True)
     price = Column(Float)
     company_id = Column(Integer, ForeignKey('companies.id'), index=True)
+    exhibition_year_id = Column(Integer, ForeignKey('exhibition_years.id'), index=True)
 
     company = relationship("Company", back_populates="orders")
+    exhibition_year = relationship("ExhibitionYear", back_populates="orders")
 
 
 class Contract(Base):
@@ -119,3 +122,28 @@ class ArrivalInfo(Base):
     company_id = Column(Integer, ForeignKey('companies.id'), index=True)
 
     company = relationship("Company", back_populates="arrival_info")
+
+class ExhibitionYear(Base):
+    __tablename__ = 'exhibition_years'
+    id = Column(Integer, primary_key=True)
+    year = Column(Integer, nullable=False, index=True)
+    start_date = Column(Date, nullable=False)
+    end_date = Column(Date, nullable=False)
+    is_active = Column(Boolean, default=False, nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), 
+                        onupdate=lambda: datetime.now(timezone.utc), nullable=False)
+
+    orders = relationship("Order", back_populates="exhibition_year")
+
+@event.listens_for(ExhibitionYear, "before_insert")
+@event.listens_for(ExhibitionYear, "before_update")
+def ensure_single_active_exhibition_year(mapper, connect, target):
+    if target.is_active:
+        session = Session(bind=connect)
+        session.query(ExhibitionYear).filter(
+            ExhibitionYear.is_active == True,
+            ExhibitionYear.id != target.id
+        ).update({ExhibitionYear.is_active: False})
+        session.commit()
+        session.close()

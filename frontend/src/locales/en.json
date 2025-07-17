@@ -2,6 +2,8 @@
   "paths": {
     "register": "register",
     "login": "login",
-    "mainscreen": "main"
+    "mainscreen": "main",
+    "singleCompany": "company",
+    "settings": "settings"
   }
 }
