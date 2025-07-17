@@ -2,6 +2,7 @@
   "paths": {
     "register": "rekisteroidu",
     "login": "kirjaudu",
-    "mainscreen": "etusivu"
+    "mainscreen": "etusivu",
+    "singleCompany": "yritys"
   }
 }
