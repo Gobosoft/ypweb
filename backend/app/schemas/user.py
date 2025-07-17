@@ -1,6 +1,7 @@
 import re
 from pydantic import BaseModel, EmailStr, validator, Field
 import datetime
+from uuid import UUID
 from typing import Optional
 
 class UserRegistrationModel(BaseModel):
@@ -33,7 +34,7 @@ class UserRegistrationModel(BaseModel):
 
 
 class UserResponseModel(BaseModel):
-    id: int
+    id: UUID
     name: str
     email: EmailStr
     created_at: Optional[datetime.datetime] = None
@@ -68,7 +69,7 @@ class ChangePasswordSchema(BaseModel):
         return v
 
 class UserBasicData(BaseModel):
-    id: int
+    id: UUID
     email: EmailStr
 
     class Config:

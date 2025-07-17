@@ -15,7 +15,7 @@ import {
 import { cn } from 'src/lib/utils'
 import { Link } from 'react-router-dom'
 import i18n from 'src/i18n'
-import { Home, LogOut, User, List } from 'lucide-react'
+import { Home, LogOut, Settings, User, List } from 'lucide-react'
 import logoutService from 'src/services/Auth/logout'
 import { linkStyling } from 'src/constants'
 import { useAppContext } from 'src/context/AppProvider'
@@ -93,6 +93,15 @@ export default function Navbar({ onLogoutSuccess }: NavbarProps) {
                 >
                   <User />
                   {i18n.t('profile.profile')}
+                </Link>
+
+                <Link
+                  to={i18n.t('paths.settings')}
+                  className={linkStyling}
+                  data-testid="sidebar-settings-link"
+                >
+                  <Settings />
+                  {i18n.t('settings')}
                 </Link>
 
                 <button

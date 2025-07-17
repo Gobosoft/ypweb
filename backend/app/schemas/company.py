@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-
+from uuid import UUID
 
 class CompanyCreate(BaseModel):
     name: str
@@ -8,7 +8,19 @@ class CompanyCreate(BaseModel):
     display_name: Optional[str] = None
     booth_size: Optional[str] = None
     special_requests: Optional[str] = None
-    status: str
-    project_id: int
     coordinator_name: Optional[str] = None
-    
+
+class CompanyResponse(BaseModel):
+    id: UUID
+    name: str
+    business_id: str
+    booth_size: Optional[str]
+    special_requests: Optional[str]
+    status: str
+    display_name: Optional[str]
+    project_id: UUID
+    coordinator_id: Optional[UUID]
+
+    class Config:
+        orm_mode = True
+        

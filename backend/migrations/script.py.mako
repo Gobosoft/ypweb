@@ -9,6 +9,8 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
+import app.core.utils.uuid_type
+import app.core.utils.types
 ${imports if imports else ""}
 
 # revision identifiers, used by Alembic.

@@ -11,6 +11,7 @@ import UserProvider from './context/UserProvider'
 import RegisterView from './views/Register/RegisterView'
 import SingleCompanyView from './views/SingleCompany/SingleCompanyView'
 import CompanyListView from './views/CompanyListView/CompanyListView'
+import AdminSettings from './views/Settings/AdminSettings'
 
 function App() {
   const { t } = useTranslation()
@@ -42,6 +43,7 @@ function App() {
             path={`${t('paths.singleCompany')}/:id`}
             element={<SingleCompanyView />}
           />
+          <Route path={t('paths.settings')} element={<AdminSettings />} />
         </Route>
       </Routes>
       <ToastContainer />
