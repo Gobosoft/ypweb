@@ -3,6 +3,7 @@
     "register": "rekisteroidu",
     "login": "kirjaudu",
     "mainscreen": "etusivu",
-    "singleCompany": "yritys"
+    "singleCompany": "yritys",
+    "companyList": "yritykset"
   }
 }

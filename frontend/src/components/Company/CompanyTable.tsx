@@ -8,7 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from 'src/components/ui/table'
-import { Select, SelectTrigger, SelectContent, SelectItem } from 'src/components/ui/select'
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+} from 'src/components/ui/select'
 import { Input } from 'src/components/ui/input'
 
 const CompanyTable = () => {
@@ -27,19 +32,6 @@ const CompanyTable = () => {
 
   return (
     <div className="space-y-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-        <Input placeholder="Hae yrityksistä" className="w-full md:w-1/2" />
-        <Select>
-          <SelectTrigger className="w-full md:w-48">
-            <span>Suodata: Kaikki</span>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="kaikki">Kaikki</SelectItem>
-            <SelectItem value="yhteys">Yhteys saatu</SelectItem>
-            <SelectItem value="ei_yhteys">Ei yhteyttä</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
       <Table>
         <TableHeader>
           <TableRow>

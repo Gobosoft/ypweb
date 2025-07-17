@@ -10,6 +10,7 @@ import LoginForm from './components/Login/LoginForm'
 import UserProvider from './context/UserProvider'
 import RegisterView from './views/Register/RegisterView'
 import SingleCompanyView from './views/SingleCompany/SingleCompanyView'
+import CompanyListView from './views/CompanyListView/CompanyListView'
 
 function App() {
   const { t } = useTranslation()
@@ -36,6 +37,7 @@ function App() {
           />
           <Route path={t('paths.mainscreen')} element={<MainScreenView />} />
           <Route path={t('paths.register')} element={<RegisterView />} />
+          <Route path={t('paths.companyList')} element={<CompanyListView />} />
           <Route
             path={`${t('paths.singleCompany')}/:id`}
             element={<SingleCompanyView />}
