@@ -1,3 +1,7 @@
 {
-    "test": "testi"
+  "paths": {
+    "register": "register",
+    "login": "login",
+    "mainscreen": "main"
+  }
 }

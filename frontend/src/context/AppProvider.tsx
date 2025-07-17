@@ -12,6 +12,7 @@ import usersService from '../services/Users/users'
 interface AppProviderType {
   currentUser: CurrentUserState
   setCurrentUser: Dispatch<SetStateAction<CurrentUserState>>
+  initializeCurrentUser: () => Promise<void>
   renderRefreshAlert: boolean
   setRenderRefreshAlert: Dispatch<SetStateAction<boolean>>
 }
@@ -26,15 +27,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   )
   const [renderRefreshAlert, setRenderRefreshAlert] = useState<boolean>(false)
 
-  const initializeCurrentUser = async (
-    projectId?: string,
-    customershipId?: string
-  ) => {
+  const initializeCurrentUser = async () => {
     try {
-      const response = await usersService.getCurrentUserStateData(
-        projectId,
-        customershipId
-      )
+      const response = await usersService.getCurrentUserStateData()
       if (response.status === 200) {
         setCurrentUser(response.data)
       }

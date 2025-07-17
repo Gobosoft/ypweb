@@ -88,7 +88,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         try {
           const user = await usersService.getCurrentUser()
           if (user) {
-            const lng = 'FI_fi'
+            const lng = 'fi_fi'
             i18n.changeLanguage(lng)
           } else {
             const lng = navigator.language

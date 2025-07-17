@@ -24,15 +24,8 @@ const getCurrentUser = async (): Promise<User | null> => {
   return request.data as User
 }
 
-const getCurrentUserStateData = async (
-  projectId?: string,
-  customershipId?: string
-): Promise<AxiosResponse> => {
-  const url = projectId
-    ? `${baseUrl}/me/state?project_id=${projectId}`
-    : customershipId
-      ? `${baseUrl}/me/state?customership_id=${customershipId}`
-      : `${baseUrl}/me/state`
+const getCurrentUserStateData = async (): Promise<AxiosResponse> => {
+  const url = `${baseUrl}/me/state`
   const response = await axiosInstance.get(url)
 
   return response
