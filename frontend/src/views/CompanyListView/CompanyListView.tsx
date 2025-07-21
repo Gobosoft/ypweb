@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import DashboardSummary from 'src/components/Dashboard/DashboardSummary '
 import CompanyTable from 'src/components/Company/CompanyTable'
 import AddOrUpdateCompanyDialog from 'src/components/Company/AddOrUpdateCompanyDialog'
 import { Input } from 'src/components/ui/input'
@@ -13,20 +12,18 @@ import companyService from 'src/services/Companies/companyService'
 import { Company } from 'src/lib/types'
 import { displayResponseErrorMessage } from 'src/lib/utils'
 
-const MainScreenView = () => {
+const CompanyListView = () => {
   const [companies, setCompanies] = useState<Company[]>([])
   const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([])
-  const [loading, setLoading] = useState(false)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filterStatus, setFilterStatus] = useState('all')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const [filterStatus, setFilterStatus] = useState<string>('all')
 
   const fetchCompanies = async () => {
     try {
       setLoading(true)
       const result = await companyService.getAllCompanies()
-      if (result) {
-        setCompanies(result)
-      }
+      setCompanies(result ?? [])
     } catch (error) {
       displayResponseErrorMessage(error)
     } finally {
@@ -43,13 +40,13 @@ const MainScreenView = () => {
 
     if (searchTerm.trim()) {
       const lowerSearch = searchTerm.toLowerCase()
-      filtered = filtered.filter((company) =>
-        company.name.toLowerCase().includes(lowerSearch)
+      filtered = filtered.filter((c) =>
+        c.name.toLowerCase().includes(lowerSearch)
       )
     }
 
     if (filterStatus !== 'all') {
-      filtered = filtered.filter((company) => company.status === filterStatus)
+      filtered = filtered.filter((c) => c.status === filterStatus)
     }
 
     setFilteredCompanies(filtered)
@@ -57,9 +54,23 @@ const MainScreenView = () => {
 
   return (
     <div className="p-6 space-y-6">
-      <DashboardSummary />
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold">Yrityslistaus (IT-näkymä)</h1>
+          <p className="text-muted-foreground text-sm">
+            Tämä näkymä on tarkoitettu IT-ylläpitoon ja yritystietojen
+            hallintaan.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <AddOrUpdateCompanyDialog
+            setCompanies={setCompanies}
+            companies={companies}
+          />
+        </div>
+      </div>
 
-      {/* Haku- ja suodatus */}
+      {/* Haku ja suodatus */}
       <div className="flex flex-col md:flex-row items-center gap-4">
         <Input
           placeholder="Hae yrityksistä"
@@ -95,4 +106,4 @@ const MainScreenView = () => {
   )
 }
 
-export default MainScreenView
+export default CompanyListView

@@ -4,6 +4,7 @@
     "login": "kirjaudu",
     "mainscreen": "etusivu",
     "singleCompany": "yritys",
+    "companyList": "yritykset",
     "settings": "asetukset"
   }
 }

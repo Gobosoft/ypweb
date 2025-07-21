@@ -20,3 +20,24 @@ export interface ExhibitionYear {
   end_date: string
   is_active: boolean
 }
+
+export enum CompanyStatus {
+  RESERVED = 'reserved',
+  UNRESERVED = 'unreserved',
+  SIGNED = 'signed',
+  ORDERED = 'ordered',
+  CHARGED = 'charged',
+  PAID = 'paid',
+}
+
+export interface Company {
+  id: string
+  name: string
+  business_id: string
+  booth_size?: string
+  special_requests?: string
+  status: CompanyStatus
+  display_name?: string
+  project_id: string
+  coordinator_id?: string
+}
