@@ -4,6 +4,8 @@ import {
   activateExhibitionYear,
 } from '../../services/AdminSettings/exhibitionYear'
 import { ExhibitionYear } from 'src/lib/types'
+import { Button } from '../ui/button'
+import { RefreshCcw } from 'lucide-react'
 
 const ExhibitionYearList: React.FC = () => {
   const [years, setYears] = useState<ExhibitionYear[]>([])
@@ -36,9 +38,16 @@ const ExhibitionYearList: React.FC = () => {
   if (loading) return <div>Loading exhibition years...</div>
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">Exhibition Years</h2>
-      <ul className="space-y-2">
+    <div>
+      <Button
+        variant={'secondary'}
+        onClick={async () => {
+          await loadYears()
+        }}
+      >
+        <RefreshCcw />
+      </Button>
+      <ul className="space-y-2 my-4">
         {years.map((year) => (
           <li
             key={year.id}

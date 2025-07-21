@@ -4,6 +4,30 @@
     "login": "login",
     "mainscreen": "main",
     "singleCompany": "company",
-    "settings": "settings"
-  }
+    "settings": "settings",
+    "companyList": "company-list",
+    "usersList": "users-list"
+  },
+  "settingsView": {
+    "usersList": "Users list",
+    "addNewUser": "Add new user",
+    "createExhibitionYear": "Add new exhibition year",
+    "exhibitionYears": "Exhibition years"
+  },
+  "name": "Name",
+  "email": "Email",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "register": "Register",
+  "alreadyHaveUser": "Already have an account?",
+  "role": "Role",
+  "logIn": "Log in",
+  "fieldValidation": {
+    "required": "Required field",
+    "greaterThan": "Value must be greater than {{amount}}",
+    "maxCharacters": "Value must be at most {{maxLength}} characters long",
+    "maxNumber": "Value must be less than or equal to {{maxNumber}}",
+    "minNumber": "Value must greater than or equal to {{minNumber}}"
+  },
+  "users": "Users"
 }

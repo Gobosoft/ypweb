@@ -26,9 +26,9 @@ const CreateExhibitionYearForm = () => {
     try {
       const response = await exhibitionYearService.createExhibitionYear(values)
       if (response.status === 201) {
-        toast.success(i18n.t('admin.exhibitionYearCreated'))
+        toast.success(i18n.t('exhibitionYearCreated'))
       } else {
-        toast.error(i18n.t('admin.failedToCreateExhibitionYear'))
+        toast.error(i18n.t('failedToCreateExhibitionYear'))
       }
     } catch (error: any) {
       displayResponseErrorMessage(error)
@@ -38,7 +38,7 @@ const CreateExhibitionYearForm = () => {
   return (
     <Card className="max-w-xl w-full mx-auto mt-6">
       <CardTitle className="text-center">
-        {i18n.t('admin.createExhibitionYear')}
+        {i18n.t('createExhibitionYear')}
       </CardTitle>
       <Separator className="my-3" />
       <CardContent>
@@ -100,7 +100,7 @@ const CreateExhibitionYearForm = () => {
 
               <PendingSubmitButton
                 isSubmitting={isSubmitting}
-                buttonText={i18n.t('admin.create')}
+                buttonText={i18n.t('create')}
               />
             </Form>
           )}

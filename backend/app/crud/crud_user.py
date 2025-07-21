@@ -13,6 +13,7 @@ from app.models import User
 from app.db.session import get_db
 from app.core.config import settings
 from app.schemas.user import UserRegistrationModel
+from app.core.utils.types import (UserRole)
 
 logger = logging.getLogger(__name__)
 
@@ -68,12 +69,9 @@ def set_access_refresh_tokens_in_cookies(response: Response, access_token: str, 
     )
 
 async def register_user(db_session: AsyncSession, user_data: UserRegistrationModel) -> dict:
-    if not user_data.email or not user_data.password or not user_data.name:
-        raise HTTPException(status_code=400, detail="Email, password and name are required.")
-
     hashed_password = hash_password(user_data.password)
     new_user = User(email=user_data.email, password_hash=hashed_password,
-                    name=user_data.name, role="IT")
+                    name=user_data.name, role=user_data.role.value)
     db_session.add(new_user)
     await db_session.flush()  # Flush to retrieve any generated ids or data needed before commit
 
@@ -91,6 +89,13 @@ async def register_user(db_session: AsyncSession, user_data: UserRegistrationMod
         "refresh_token": hashed_refresh_token
     }
 
+async def create_user(db_session: AsyncSession, user_data: UserRegistrationModel) -> dict:
+    async with db_session:
+        hashed_password = hash_password(user_data.password)
+        new_user = User(email=user_data.email, password_hash=hashed_password,
+                        name=user_data.name, role=user_data.role.value)
+        db_session.add(new_user)
+        await db_session.commit()
 
 async def authenticate_user(db_session: AsyncSession, email: str, password: str) -> User:
     user = await get_user_by_email(db_session, email)
@@ -191,6 +196,13 @@ async def get_current_user(token: str = Depends(get_token_from_cookie), db: Asyn
 def login_required(user: User = Depends(get_current_user)):
     return user
 
+async def it_user_role_required(
+    current_user: User = Depends(login_required),
+    db: AsyncSession = Depends(get_db),
+) -> User:
+    if not current_user.role == UserRole.IT:
+        raise HTTPException(status_code=403, detail="Not enough permissions, IT user required")
+    return current_user
 
 def generate_verification_token():
     return str(uuid.uuid4())
@@ -241,3 +253,7 @@ async def get_user_by_id(db_session: AsyncSession, id: int):
         select(User).filter(User.id == id)
     )
     return result.scalars().one_or_none()
+
+async def get_all_users(db: AsyncSession):
+    result = await db.execute(select(User))
+    return result.scalars().all()

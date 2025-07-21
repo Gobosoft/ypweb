@@ -11,9 +11,9 @@ from app.core.utils.types import CompanyStatus
 async def create_company(db: AsyncSession, data: CompanyCreate) -> Company:
     # Hae uusin messuprojekti
     result = await db.execute(select(ExhibitionYear).order_by(desc(ExhibitionYear.year)))
-    project = result.scalars().first()
-    if not project:
-        raise HTTPException(status_code=404, detail="No exhibition project available")
+    exhibition_year = result.scalars().first()
+    if not exhibition_year:
+        raise HTTPException(status_code=404, detail="No exhibition year available")
 
     # Tarkista duplikaatti Y-tunnuksella
     result = await db.execute(select(Company).filter(Company.business_id == data.business_id))
@@ -40,7 +40,7 @@ async def create_company(db: AsyncSession, data: CompanyCreate) -> Company:
         booth_size=data.booth_size,
         special_requests=data.special_requests,
         status=status.value,
-        project_id=project.id,
+        exhibition_year_id=exhibition_year.id,
         coordinator_id=coordinator_id,
     )
 

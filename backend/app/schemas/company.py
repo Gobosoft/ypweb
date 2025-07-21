@@ -18,7 +18,7 @@ class CompanyResponse(BaseModel):
     special_requests: Optional[str]
     status: str
     display_name: Optional[str]
-    project_id: UUID
+    exhibition_year_id: UUID
     coordinator_id: Optional[UUID]
 
     class Config:

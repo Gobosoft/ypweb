@@ -2,13 +2,15 @@ import { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
 import i18n from '../../i18n'
 import axiosInstance from '../../axiosConfig'
+import { UserRole } from 'src/lib/types'
 
-const baseUrl = '/api/auth/register'
+const baseUrl = '/api/admin/register'
 
 interface UserData {
   name: string
   email: string
   password: string
+  role: UserRole
 }
 
 interface ApiResponse {

@@ -3,6 +3,7 @@ from sqlalchemy import select
 from fastapi import HTTPException
 from app.schemas.exhibition_year import ExhibitionYearCreate
 from app.models import ExhibitionYear
+from uuid import UUID
 
 async def create_exhibition_year(db_session: AsyncSession, data: ExhibitionYearCreate):
     stmt = select(ExhibitionYear).where(ExhibitionYear.year == data.year)
@@ -26,7 +27,7 @@ async def get_all_exhibition_years(db: AsyncSession):
     result = await db.execute(select(ExhibitionYear).order_by(ExhibitionYear.year.desc()))
     return result.scalars().all()
 
-async def activate_exhibition_year(db: AsyncSession, year_id: int):
+async def activate_exhibition_year(db: AsyncSession, year_id: UUID):
     year = await db.get(ExhibitionYear, year_id)
     if not year:
         raise HTTPException(status_code=404, detail="Exhibition year not found")
