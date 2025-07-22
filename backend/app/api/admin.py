@@ -6,9 +6,10 @@ from app.crud.crud_user import (login_required, it_user_role_required, set_acces
 from app.db.session import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.crud_admin import (create_exhibition_year, get_all_exhibition_years,
-                                 activate_exhibition_year)
+                                 activate_exhibition_year, create_building)
 from app.schemas.exhibition_year import (ExhibitionYearCreate)
 from app.schemas.user import (UserRegistrationModel)
+from app.schemas.buildings import (BuildingCreate)
 from sqlalchemy.exc import IntegrityError
 from uuid import UUID
 
@@ -75,4 +76,11 @@ async def register(
     except Exception as e:
         logger.error(f"Unexpected error during user registration: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unexpected error during registration")
-    
+
+@router.post("/create-building", status_code=status.HTTP_201_CREATED)
+async def create_building_endpoint(
+    building: BuildingCreate,
+    db: AsyncSession = Depends(get_db),
+):
+    new_building = await create_building(building, db)
+    return new_building
