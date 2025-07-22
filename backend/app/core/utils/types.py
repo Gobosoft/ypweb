@@ -7,3 +7,9 @@ class CompanyStatus(str, Enum):
     CHARGED = "charged"         # Yritykselle on lähetetty lasku
     PAID = "paid"               # Yritys on maksanut laskun
     DECLINED = "declined"       # Ei lähde tänä vuonna mukaan
+
+class UserRole(str, Enum):
+    AK = "AK"
+    PP = "PP"
+    IT = "IT"
+    FINANCE = "FINANCE"

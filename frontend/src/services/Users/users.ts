@@ -31,10 +31,8 @@ const getCurrentUserStateData = async (): Promise<AxiosResponse> => {
   return response
 }
 
-const getUsersByProjectId = async (
-  projectId: string
-): Promise<AxiosResponse> => {
-  const response = await axiosInstance.get(`${baseUrl}/projects/${projectId}`)
+const getAllUsers = async (): Promise<AxiosResponse> => {
+  const response = await axiosInstance.get(`${baseUrl}/get-all-users`)
   return response
 }
 
@@ -111,7 +109,7 @@ const verifyCrmAccess = async (): Promise<AxiosResponse> => {
 
 export default {
   getCurrentUser,
-  getUsersByProjectId,
+  getAllUsers,
   updateCurrentUserData,
   deleteCurrentUser,
   getCurrentUserStateData,

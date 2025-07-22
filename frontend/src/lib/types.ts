@@ -1,16 +1,25 @@
 export interface CurrentUserState {
   userData: {
+    name: string
     email: string
-    phone?: string
-    language: string
+    role: UserRole
   }
 }
 
 export type User = {
   id: string
+  name: string
   email: string
+  role: UserRole
   created_at?: Date
   updated_at?: Date
+}
+
+export enum UserRole {
+  IT = 'IT',
+  FINANCE = 'FINANCE',
+  AK = 'AK',
+  PP = 'PP',
 }
 
 export interface ExhibitionYear {
@@ -38,6 +47,6 @@ export interface Company {
   special_requests?: string
   status: CompanyStatus
   display_name?: string
-  project_id: string
+  exhibition_year_id: string
   coordinator_id?: string
 }

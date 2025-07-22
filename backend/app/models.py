@@ -1,11 +1,12 @@
 from sqlalchemy import (
     Column, String, Boolean, ForeignKey,
-    DateTime, Text, Float, Enum, Index, Date, event, Integer
+    DateTime, Text, Float, Enum as SQLEnum, Index, Date, event, Integer
 )
 import uuid
 from sqlalchemy.orm import relationship, declarative_base, Session
 from datetime import datetime, timezone
 from app.core.utils.uuid_type import GUID  # Assuming this is your BINARY(16) UUID type
+from app.core.utils.types import (UserRole)
 
 Base = declarative_base()
 
@@ -18,10 +19,10 @@ class Company(Base):
     special_requests = Column(Text)
     status = Column(String(50), index=True)
     display_name = Column(String(255), index=True)
-    project_id = Column(GUID(), ForeignKey('exhibition_years.id'), index=True)
+    exhibition_year_id = Column(GUID(), ForeignKey('exhibition_years.id'), index=True)
     coordinator_id = Column(GUID(), ForeignKey('users.id'), index=True)
 
-    project = relationship("ExhibitionYear", back_populates="companies")
+    exhibition_year = relationship("ExhibitionYear", back_populates="companies")
     coordinator = relationship("User", back_populates="assigned_companies")
     contacts = relationship("Contact", back_populates="company")
     comments = relationship("Comment", back_populates="company")
@@ -54,7 +55,7 @@ class User(Base):
     email = Column(String(120), nullable=False, unique=True)
     password_hash = Column(String(150), nullable=False)
     refresh_token = Column(String(300), index=True, nullable=True)
-    role = Column(Enum('AK', 'PP', 'IT', 'Finance', name='user_roles'), index=True)
+    role = Column(SQLEnum(UserRole, name="user_roles"), index=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc),
                         onupdate=lambda: datetime.now(timezone.utc), nullable=False)
@@ -127,7 +128,7 @@ class ExhibitionYear(Base):
                         onupdate=lambda: datetime.now(timezone.utc), nullable=False)
 
     orders = relationship("Order", back_populates="exhibition_year")
-    companies = relationship("Company", back_populates="project")
+    companies = relationship("Company", back_populates="exhibition_year")
 
 
 @event.listens_for(ExhibitionYear, "before_insert")

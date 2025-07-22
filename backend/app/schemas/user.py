@@ -3,11 +3,13 @@ from pydantic import BaseModel, EmailStr, validator, Field
 import datetime
 from uuid import UUID
 from typing import Optional
+from app.core.utils.types import (UserRole)
 
 class UserRegistrationModel(BaseModel):
     name: str
     email: EmailStr
     password: str
+    role: UserRole
 
     @validator('password')
     def validate_password(cls, v):
@@ -85,6 +87,13 @@ class UserSearchModel(BaseModel):
 class UserStateData(BaseModel):
     email: EmailStr
     name: str
+    role: UserRole
 
 class UserStateResponseModel(BaseModel):
     userData: UserStateData
+
+class UserOut(BaseModel):
+    id: UUID
+    name: str
+    email: EmailStr
+    role: UserRole

@@ -12,12 +12,21 @@ import { Card, CardContent, CardTitle } from '../ui/card'
 import { Separator } from '../ui/separator'
 import { Eye, EyeOff } from 'lucide-react'
 import i18n from '../../i18n'
+import { UserRole } from 'src/lib/types'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select'
 
 interface RegisterFormValues {
   name: string
   email: string
   password: string
   verifyPassword: string
+  role: UserRole
 }
 
 const RegisterForm = () => {
@@ -34,6 +43,7 @@ const RegisterForm = () => {
         email: values.email,
         password: values.password,
         name: values.name,
+        role: values.role,
       })
     } catch (error) {
       toast.error(i18n.t('registrationFailed'))
@@ -51,11 +61,12 @@ const RegisterForm = () => {
             email: '',
             password: '',
             verifyPassword: '',
+            role: UserRole.AK,
           }}
           validationSchema={validationSchemaRegister}
           onSubmit={handleRegister}
         >
-          {({ isSubmitting, handleSubmit }) => {
+          {({ isSubmitting, handleSubmit, setFieldValue, values }) => {
             return (
               <Form onSubmit={handleSubmit}>
                 <CardTitle className="mb-2 text-center">
@@ -112,6 +123,30 @@ const RegisterForm = () => {
                     as={Input}
                   />
                   <FormErrorMessage name="verifyPassword" />
+
+                  <Label>{i18n.t('role')}</Label>
+                  <Field name="role">
+                    {() => (
+                      <Select
+                        value={values.role}
+                        onValueChange={(value) => {
+                          setFieldValue('role', value)
+                        }}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder={i18n.t('selectRole')} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.values(UserRole).map((userRole) => (
+                            <SelectItem key={userRole} value={userRole}>
+                              {userRole}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  </Field>
+                  <FormErrorMessage name="role" />
 
                   <Button type="submit" disabled={isSubmitting}>
                     {i18n.t('register')}

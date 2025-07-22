@@ -17,9 +17,11 @@ export const passwordVerifyValidationYup = () =>
 
 export const validationSchemaRegister = () =>
   Yup.object().shape({
+    name: Yup.string().required(i18n.t('fieldValidation.required')),
     email: Yup.string()
       .email(i18n.t('emailValidation.invalidFormat'))
       .required(i18n.t('fieldValidation.required')),
     password: passwordValidationYup(),
     verifyPassword: passwordVerifyValidationYup(),
+    role: Yup.string().required(i18n.t('fieldValidation.required')),
   })

@@ -19,10 +19,6 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-@router.get("/moi")
-async def moi():
-    return {"moi": "1"}
-
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 # @limiter.limit("2/minute")
 async def register(

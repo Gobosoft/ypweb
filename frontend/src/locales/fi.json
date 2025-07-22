@@ -5,6 +5,29 @@
     "mainscreen": "etusivu",
     "singleCompany": "yritys",
     "companyList": "yritykset",
-    "settings": "asetukset"
-  }
+    "settings": "asetukset",
+    "usersList": "kayttajalistaus"
+  },
+  "settingsView": {
+    "usersList": "Käyttäjälistaus",
+    "addNewUser": "Lisää uusi käyttäjä",
+    "createExhibitionYear": "Luo uusi messuvuosi",
+    "exhibitionYears": "Messuvuodet"
+  },
+  "name": "Nimi",
+  "email": "Sähköposti",
+  "password": "Salasana",
+  "confirmPassword": "Vahvista salasana",
+  "register": "Rekisteröidy",
+  "alreadyHaveUser": "Onko sinulla jo tili?",
+  "role": "Rooli",
+  "logIn": "Kirjaudu sisään",
+  "fieldValidation": {
+    "required": "Pakollinen tieto",
+    "greaterThan": "Tiedon tulee olla suurempaa kuin {{amount}}",
+    "maxCharacters": "Tiedon tulee olla enintään {{maxLength}} merkkiä pitkä",
+    "maxNumber": "Tiedon tulee olla korkeintaan {{maxNumber}}",
+    "minNumber": "Tiedon tulee olla vähintään {{minNumber}}"
+  },
+  "users": "Käyttäjät"
 }

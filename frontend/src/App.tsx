@@ -12,6 +12,8 @@ import RegisterView from './views/Register/RegisterView'
 import SingleCompanyView from './views/SingleCompany/SingleCompanyView'
 import CompanyListView from './views/CompanyListView/CompanyListView'
 import AdminSettings from './views/Settings/AdminSettings'
+import UsersList from './views/Settings/UsersList'
+import AdminSettingsLayout from './layouts/AdminSettingsLayout'
 
 function App() {
   const { t } = useTranslation()
@@ -43,7 +45,12 @@ function App() {
             path={`${t('paths.singleCompany')}/:id`}
             element={<SingleCompanyView />}
           />
-          <Route path={t('paths.settings')} element={<AdminSettings />} />
+          <Route path={t('paths.settings')} element={<AdminSettingsLayout />}>
+            <Route path="" element={<AdminSettings />} />
+            <Route path={t('paths.usersList')}>
+              <Route path="" element={<UsersList />} />
+            </Route>
+          </Route>
         </Route>
       </Routes>
       <ToastContainer />
