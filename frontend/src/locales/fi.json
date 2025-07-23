@@ -15,7 +15,10 @@
     "usersList": "Käyttäjälistaus",
     "addNewUser": "Lisää uusi käyttäjä",
     "createExhibitionYear": "Luo uusi messuvuosi",
-    "exhibitionYears": "Messuvuodet"
+    "exhibitionYears": "Messuvuodet",
+    "title": "Asetukset",
+    "addProduct": "Lisää uusi tuote",
+    "products": "Tuotteet"
   },
   "name": "Nimi",
   "email": "Sähköposti",
@@ -25,6 +28,7 @@
   "alreadyHaveUser": "Onko sinulla jo tili?",
   "role": "Rooli",
   "logIn": "Kirjaudu sisään",
+  "isActive": "Aktiivinen",
   "fieldValidation": {
     "required": "Pakollinen tieto",
     "greaterThan": "Tiedon tulee olla suurempaa kuin {{amount}}",

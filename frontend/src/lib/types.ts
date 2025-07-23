@@ -71,3 +71,12 @@ export enum OrderType {
   STAND = 'STAND',
   OTHER = 'OTHER',
 }
+
+export type Product = {
+  id: string
+  name: string
+  price: number
+  description?: string
+  is_active: boolean
+  exhibition_year_id: string
+}
