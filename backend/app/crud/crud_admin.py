@@ -2,7 +2,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from fastapi import HTTPException
 from app.schemas.exhibition_year import ExhibitionYearCreate
-from app.models import ExhibitionYear
+from app.schemas.buildings import (BuildingCreate)
+from app.models import (ExhibitionYear, Building)
 from uuid import UUID
 
 async def create_exhibition_year(db_session: AsyncSession, data: ExhibitionYearCreate):
@@ -39,3 +40,13 @@ async def activate_exhibition_year(db: AsyncSession, year_id: UUID):
     await db.refresh(year)
 
     return year
+
+async def create_building(building_data: BuildingCreate, db: AsyncSession) -> Building:
+    new_building = Building(
+        name=building_data.name,
+        location=building_data.location,
+    )
+    db.add(new_building)
+    await db.commit()
+    await db.refresh(new_building)
+    return new_building

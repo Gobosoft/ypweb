@@ -17,8 +17,8 @@ i18n
         translation: translationsFi,
       },
     },
-    lng: 'en', // default language
-    fallbackLng: 'en',
+    lng: 'fi', // default language
+    fallbackLng: 'fi',
     interpolation: {
       escapeValue: false, // react already safes from xss
     },

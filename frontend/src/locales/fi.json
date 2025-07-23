@@ -6,7 +6,9 @@
     "singleCompany": "yritys",
     "companyList": "yritykset",
     "settings": "asetukset",
-    "usersList": "kayttajalistaus"
+    "usersList": "kayttajalistaus",
+    "myCompanies": "omat-yritykset",
+    "allOrders": "kaikki-tilaukset"
   },
   "settingsView": {
     "usersList": "Käyttäjälistaus",
@@ -29,5 +31,15 @@
     "maxNumber": "Tiedon tulee olla korkeintaan {{maxNumber}}",
     "minNumber": "Tiedon tulee olla vähintään {{minNumber}}"
   },
-  "users": "Käyttäjät"
+  "users": "Käyttäjät",
+  "logout": "Kirjaudu ulos",
+  "settings": "Asetukset",
+  "mainscreen": "Koti",
+  "companyList": "Yrityslistaus",
+  "myCompanies": "Omat yritykset",
+  "addNewCompany": "Lisää yritys",
+  "allOrders": "Kaikki tilaukset",
+  "profile": {
+    "profile": "Profiili"
+  }
 }

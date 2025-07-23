@@ -13,3 +13,18 @@ class UserRole(str, Enum):
     PP = "PP"
     IT = "IT"
     FINANCE = "FINANCE"
+
+class OrderStatus(str, Enum):
+    PENDING = "PENDING"
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
+    COMPLETED = "COMPLETED"
+
+class OrderType(str, Enum):
+    STAND = "STAND"
+    OTHER = "OTHER"
+
+class MaterialType(str, Enum):
+    LOGO = "LOGO"
+    AD = "AD"
+    OTHER = "OTHER"

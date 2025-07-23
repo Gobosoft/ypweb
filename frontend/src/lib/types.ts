@@ -50,3 +50,12 @@ export interface Company {
   exhibition_year_id: string
   coordinator_id?: string
 }
+
+export type Order = {
+  id: string
+  order_date: string
+  order_type: string
+  status: string
+  attendance_confirmed: boolean
+  portal_uuid: string
+}
