@@ -4,6 +4,8 @@ import OrderDetailsCard from 'src/components/Order/OrderDetailsCard'
 import CompanyNotesCard from 'src/components/Company/CompanyNotesCard'
 import { Button } from 'src/components/ui/button'
 import { Card } from 'src/components/ui/card'
+import { Link } from 'react-router-dom'
+import i18n from 'src/i18n'
 
 const SingleCompanyView = () => {
   return (
@@ -14,7 +16,12 @@ const SingleCompanyView = () => {
           <h2 className="text-2xl font-bold">CodeNest Labs</h2>
           <p className="text-muted-foreground">CodeNest Labs Finland Oy</p>
         </div>
-        <Button>Muokkaa tietoja</Button>
+        <div className="flex gap-2 flex-wrap">
+          <Button asChild>
+            <Link to={i18n.t('paths.orders')}>{i18n.t('orders')}</Link>
+          </Button>
+          <Button>Muokkaa tietoja</Button>
+        </div>
       </div>
 
       {/* Yhteyshenkilöt */}

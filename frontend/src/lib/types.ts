@@ -59,3 +59,15 @@ export type Order = {
   attendance_confirmed: boolean
   portal_uuid: string
 }
+
+export enum OrderStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  COMPLETED = 'COMPLETED',
+}
+
+export enum OrderType {
+  STAND = 'STAND',
+  OTHER = 'OTHER',
+}
