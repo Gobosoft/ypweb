@@ -1,8 +1,8 @@
 from app.models import (Order, Company, ExhibitionYear, Building, Contract,
-                        Material, ArrivalInfo, Invoice)
+                        Material, ArrivalInfo, Invoice, OrderRow, Product)
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.orders import (OrderCreate, OrderUpdate, ContractCreate, MaterialCreate, ArrivalInfoCreate,
-                                InvoiceCreate)
+                                InvoiceCreate, OrderRowCreate)
 from fastapi import HTTPException
 from sqlalchemy.future import select
 from uuid import UUID
@@ -115,3 +115,28 @@ async def create_invoice(invoice_data: InvoiceCreate, db: AsyncSession) -> Invoi
     await db.commit()
     await db.refresh(new_invoice)
     return new_invoice
+
+async def create_order_row(order_id: UUID, payload: OrderRowCreate, db: AsyncSession) -> OrderRow:
+    await get_order_or_404(order_id, db)
+
+    result = await db.execute(select(Product).where(Product.id == payload.product_id))
+    product = result.scalar_one_or_none()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    order_row = OrderRow(
+        order_id=order_id,
+        **payload.dict()
+    )
+    db.add(order_row)
+    await db.commit()
+    await db.refresh(order_row)
+
+    return order_row
+
+async def get_order_rows_by_order_id(order_id: UUID, db: AsyncSession):
+    await get_order_or_404(order_id, db)
+
+    result = await db.execute(select(OrderRow).where(OrderRow.order_id == order_id))
+    order_rows = result.scalars().all()
+    return order_rows

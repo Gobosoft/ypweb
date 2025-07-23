@@ -4,9 +4,11 @@ from app.crud.crud_user import (login_required, it_user_role_required)
 from app.crud.crud_orders import (create_order, get_all_orders, update_order,
                                   get_orders_by_company_id, get_order_by_id,
                                   create_arrival_info, create_contract,
-                                  create_material, create_invoice)
+                                  create_material, create_invoice, create_order_row,
+                                  get_order_rows_by_order_id)
 from app.schemas.orders import (OrderCreate, OrderResponse, OrderUpdate, ContractCreate, MaterialCreate,
-                                ArrivalInfoCreate, InvoiceCreate)
+                                ArrivalInfoCreate, InvoiceCreate, OrderRowCreate,
+                                OrderRowRead)
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 from app.db.session import get_db
@@ -73,3 +75,15 @@ async def add_invoice(
     db: AsyncSession = Depends(get_db),
 ):
     return await create_invoice(invoice_data, db)
+
+@router.post("/{order_id}/create-order-row", status_code=status.HTTP_201_CREATED)
+async def create_order_row_endpoint(
+    order_id: UUID,
+    payload: OrderRowCreate,
+    db: AsyncSession = Depends(get_db)
+    ):
+    return await create_order_row(order_id=order_id, payload=payload, db=db)
+
+@router.get("/{order_id}/order-rows", response_model=list[OrderRowRead])
+async def get_order_rows_by_order_id_endpoint(order_id: UUID, db: AsyncSession = Depends(get_db)):
+    return await get_order_rows_by_order_id(order_id=order_id, db=db)

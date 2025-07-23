@@ -70,3 +70,18 @@ class InvoiceCreate(BaseModel):
     is_paid: Optional[bool] = False
     reference: str
     special_info: Optional[str] = None
+
+class OrderRowCreate(BaseModel):
+    product_id: UUID
+    amount: float
+    unit_price: float
+
+class OrderRowRead(BaseModel):
+    id: UUID
+    order_id: UUID
+    product_id: UUID
+    amount: float
+    unit_price: float
+
+    class Config:
+        orm_mode = True

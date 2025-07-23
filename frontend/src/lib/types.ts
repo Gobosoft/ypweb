@@ -80,3 +80,11 @@ export type Product = {
   is_active: boolean
   exhibition_year_id: string
 }
+
+export interface OrderRow {
+  id: string
+  order_id: string
+  product_id: string
+  amount: number
+  unit_price: number
+}

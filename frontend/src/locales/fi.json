@@ -20,6 +20,7 @@
     "addProduct": "Lisää uusi tuote",
     "products": "Tuotteet"
   },
+  "addOrderRow": "Lisää tilausrivi",
   "name": "Nimi",
   "email": "Sähköposti",
   "password": "Salasana",
