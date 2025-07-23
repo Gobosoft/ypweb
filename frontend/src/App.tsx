@@ -14,6 +14,8 @@ import CompanyListView from './views/CompanyListView/CompanyListView'
 import AdminSettings from './views/Settings/AdminSettings'
 import UsersList from './views/Settings/UsersList'
 import AdminSettingsLayout from './layouts/AdminSettingsLayout'
+import MyCompaniesView from './views/MyCompanies/MyCompaniesView'
+import AllOrdersView from './views/OrdersView/AllOrdersView'
 
 function App() {
   const { t } = useTranslation()
@@ -41,6 +43,9 @@ function App() {
           <Route path={t('paths.mainscreen')} element={<MainScreenView />} />
           <Route path={t('paths.register')} element={<RegisterView />} />
           <Route path={t('paths.companyList')} element={<CompanyListView />} />
+          <Route path={t('paths.myCompanies')} element={<MyCompaniesView />} />
+          <Route path={t('paths.allOrders')} element={<AllOrdersView />} />
+
           <Route
             path={`${t('paths.singleCompany')}/:id`}
             element={<SingleCompanyView />}

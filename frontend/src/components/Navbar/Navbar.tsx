@@ -15,10 +15,10 @@ import {
 import { cn } from 'src/lib/utils'
 import { Link } from 'react-router-dom'
 import i18n from 'src/i18n'
-import { Home, LogOut, Settings, User, List } from 'lucide-react'
+import { Home, LogOut, Settings, User, List, Building } from 'lucide-react'
 import logoutService from 'src/services/Auth/logout'
 import { linkStyling } from 'src/constants'
-import { useAppContext } from 'src/context/AppProvider'
+import { Button } from '../ui/button'
 
 interface NavbarProps {
   onLogoutSuccess: () => void
@@ -26,10 +26,8 @@ interface NavbarProps {
 
 export default function Navbar({ onLogoutSuccess }: NavbarProps) {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const navigate = useNavigate()
-
-  const { currentUser } = useAppContext()
 
   const handleLogout = async () => {
     setIsNavbarOpen(false)
@@ -39,14 +37,6 @@ export default function Navbar({ onLogoutSuccess }: NavbarProps) {
       navigate('/')
     }
   }
-
-  useEffect(() => {
-    if (currentUser.userData) {
-      setIsVisible(true)
-    } else {
-      setIsVisible(false)
-    }
-  }, [currentUser])
 
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen)
@@ -58,10 +48,11 @@ export default function Navbar({ onLogoutSuccess }: NavbarProps) {
 
   return (
     <nav className="p-4 bg-white border-b">
-      <div className="container mx-auto flex items-center justify-between">
-        <button data-testid="home-button">
-          <Link to="/">Etusivu</Link>
-        </button>
+      <div className="flex items-center justify-between">
+        <Button data-testid="home-button" variant={'link'}>
+          <Link to="/">YPWEB</Link>
+        </Button>
+
         {isVisible && (
           <Sheet open={isNavbarOpen} onOpenChange={setIsNavbarOpen}>
             <SheetTrigger
@@ -72,11 +63,19 @@ export default function Navbar({ onLogoutSuccess }: NavbarProps) {
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Gobosoft</SheetTitle>
+                <SheetTitle>YPWEB</SheetTitle>
               </SheetHeader>
               <div className="flex flex-col flex-wrap gap-3 justify-center my-4">
                 <Link to={i18n.t('paths.mainscreen')} className={linkStyling}>
                   <Home /> {i18n.t('mainscreen')}
+                </Link>
+                <Link
+                  to={i18n.t('paths.myCompanies')}
+                  className={linkStyling}
+                  data-testid="sidebar-mycompanies-link"
+                >
+                  <Building />
+                  {i18n.t('myCompanies')}
                 </Link>
                 <Link
                   to={i18n.t('paths.companyList')}

@@ -6,7 +6,8 @@
     "singleCompany": "company",
     "settings": "settings",
     "companyList": "company-list",
-    "usersList": "users-list"
+    "usersList": "users-list",
+    "myCompanies": "my-companies"
   },
   "settingsView": {
     "usersList": "Users list",

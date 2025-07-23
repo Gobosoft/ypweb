@@ -1,8 +1,9 @@
 from app.models import (Order, Company, ExhibitionYear, Building)
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.schemas.orders import OrderCreate
+from app.schemas.orders import (OrderCreate, OrderUpdate)
 from fastapi import HTTPException
 from sqlalchemy.future import select
+from uuid import UUID
 
 async def create_order(order_data: OrderCreate, db: AsyncSession) -> Order:
 
@@ -39,3 +40,25 @@ async def create_order(order_data: OrderCreate, db: AsyncSession) -> Order:
     await db.commit()
     await db.refresh(new_order)
     return new_order
+
+async def get_all_orders(db: AsyncSession):
+    result = await db.execute(select(Order))
+    return result.scalars().all()
+
+async def update_order(
+    db: AsyncSession, order_id: UUID, order_data: OrderUpdate
+) -> Order:
+    result = await db.execute(select(Order).where(Order.id == order_id))
+    order = result.scalar_one_or_none()
+
+    if not order:
+        raise HTTPException(
+            status_code=404, detail="Order not found"
+        )
+
+    for key, value in order_data.dict(exclude_unset=True).items():
+        setattr(order, key, value)
+
+    await db.commit()
+    await db.refresh(order)
+    return order
