@@ -1,6 +1,8 @@
-from app.models import (Order, Company, ExhibitionYear, Building)
+from app.models import (Order, Company, ExhibitionYear, Building, Contract,
+                        Material, ArrivalInfo, Invoice, OrderRow, Product)
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.schemas.orders import (OrderCreate, OrderUpdate)
+from app.schemas.orders import (OrderCreate, OrderUpdate, ContractCreate, MaterialCreate, ArrivalInfoCreate,
+                                InvoiceCreate, OrderRowCreate)
 from fastapi import HTTPException
 from sqlalchemy.future import select
 from uuid import UUID
@@ -62,3 +64,107 @@ async def update_order(
     await db.commit()
     await db.refresh(order)
     return order
+
+async def get_orders_by_company_id(company_id: UUID, db: AsyncSession):
+    result = await db.execute(select(Order).where(Order.company_id == company_id))
+    return result.scalars().all()
+
+async def get_order_by_id(order_id: UUID, db: AsyncSession) -> Order | None:
+    result = await db.execute(select(Order).where(Order.id == order_id))
+    return result.scalars().first()
+
+async def get_order_or_404(order_id: UUID, db: AsyncSession) -> Order:
+    result = await db.execute(select(Order).where(Order.id == order_id))
+    order = result.scalar_one_or_none()
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    return order
+
+async def create_contract(contract_data: ContractCreate, db: AsyncSession) -> Contract:
+    await get_order_or_404(contract_data.order_id, db)
+
+    contract = Contract(**contract_data.dict())
+    db.add(contract)
+    await db.commit()
+    await db.refresh(contract)
+    return contract
+
+async def create_material(material_data: MaterialCreate, db: AsyncSession) -> Material:
+    await get_order_or_404(material_data.order_id, db)
+    
+    material = Material(**material_data.dict())
+    db.add(material)
+    await db.commit()
+    await db.refresh(material)
+    return material
+
+async def create_arrival_info(arrival_data: ArrivalInfoCreate, db: AsyncSession) -> ArrivalInfo:
+    await get_order_or_404(arrival_data.order_id, db)
+    
+    arrival_info = ArrivalInfo(**arrival_data.dict())
+    db.add(arrival_info)
+    await db.commit()
+    await db.refresh(arrival_info)
+    return arrival_info
+
+async def create_invoice(invoice_data: InvoiceCreate, db: AsyncSession) -> Invoice:
+    await get_order_or_404(invoice_data.order_id, db)
+
+    new_invoice = Invoice(**invoice_data.dict())
+    db.add(new_invoice)
+    await db.commit()
+    await db.refresh(new_invoice)
+    return new_invoice
+
+async def create_order_row(order_id: UUID, payload: OrderRowCreate, db: AsyncSession) -> OrderRow:
+    await get_order_or_404(order_id, db)
+
+    result = await db.execute(select(Product).where(Product.id == payload.product_id))
+    product = result.scalar_one_or_none()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    order_row = OrderRow(
+        order_id=order_id,
+        **payload.dict()
+    )
+    db.add(order_row)
+    await db.commit()
+    await db.refresh(order_row)
+
+    return order_row
+
+async def get_order_rows_by_order_id(order_id: UUID, db: AsyncSession):
+    await get_order_or_404(order_id, db)
+
+    result = await db.execute(select(OrderRow).where(OrderRow.order_id == order_id))
+    order_rows = result.scalars().all()
+    return order_rows
+
+async def get_materials_by_order_id(order_id: UUID, db: AsyncSession):
+    await get_order_or_404(order_id, db)
+
+    result = await db.execute(select(Material).where(Material.order_id == order_id))
+    materials = result.scalars().all()
+    return materials
+
+async def get_arrival_infos_by_order_id(order_id: UUID, db: AsyncSession):
+    await get_order_or_404(order_id, db)
+
+    result = await db.execute(select(ArrivalInfo).where(ArrivalInfo.order_id == order_id))
+    arrival_infos = result.scalars().all()
+    return arrival_infos
+
+async def get_contracts_by_order_id(order_id: UUID, db: AsyncSession):
+    await get_order_or_404(order_id, db)
+
+    result = await db.execute(select(Contract).where(Contract.order_id == order_id))
+    contracts = result.scalars().all()
+    return contracts
+
+async def get_invoices_by_order_id(order_id: UUID, db: AsyncSession):
+    await get_order_or_404(order_id, db)
+
+    result = await db.execute(select(Invoice).where(Invoice.order_id == order_id))
+    invoices = result.scalars().all()
+    return invoices

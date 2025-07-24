@@ -8,14 +8,19 @@
     "settings": "asetukset",
     "usersList": "kayttajalistaus",
     "myCompanies": "omat-yritykset",
-    "allOrders": "kaikki-tilaukset"
+    "allOrders": "kaikki-tilaukset",
+    "orders": "tilaukset"
   },
   "settingsView": {
     "usersList": "Käyttäjälistaus",
     "addNewUser": "Lisää uusi käyttäjä",
     "createExhibitionYear": "Luo uusi messuvuosi",
-    "exhibitionYears": "Messuvuodet"
+    "exhibitionYears": "Messuvuodet",
+    "title": "Asetukset",
+    "addProduct": "Lisää uusi tuote",
+    "products": "Tuotteet"
   },
+  "addOrderRow": "Lisää tilausrivi",
   "name": "Nimi",
   "email": "Sähköposti",
   "password": "Salasana",
@@ -24,6 +29,7 @@
   "alreadyHaveUser": "Onko sinulla jo tili?",
   "role": "Rooli",
   "logIn": "Kirjaudu sisään",
+  "isActive": "Aktiivinen",
   "fieldValidation": {
     "required": "Pakollinen tieto",
     "greaterThan": "Tiedon tulee olla suurempaa kuin {{amount}}",
@@ -39,6 +45,7 @@
   "myCompanies": "Omat yritykset",
   "addNewCompany": "Lisää yritys",
   "allOrders": "Kaikki tilaukset",
+  "orders": "Tilaukset",
   "profile": {
     "profile": "Profiili"
   }

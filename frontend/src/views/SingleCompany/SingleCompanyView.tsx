@@ -10,6 +10,8 @@ import companyService from 'src/services/Companies/companyService'
 import { Company } from 'src/lib/types'
 import SmallLoadingCircleOnly from 'src/components/Loading/SmallLoadingCircle'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
+import i18n from 'src/i18n'
 
 const SingleCompanyView = () => {
   const { id: companyId } = useParams<{ id: string }>()
@@ -56,7 +58,12 @@ const SingleCompanyView = () => {
           <h2 className="text-2xl font-bold">{company.display_name}</h2>
           <p className="text-muted-foreground">{company.name}</p>
         </div>
-        <Button>Muokkaa tietoja</Button>
+        <div className="flex gap-2 flex-wrap">
+          <Button asChild>
+            <Link to={i18n.t('paths.orders')}>{i18n.t('orders')}</Link>
+          </Button>
+          <Button>Muokkaa tietoja</Button>
+        </div>
       </div>
 
       {/* Yhteyshenkilöt */}

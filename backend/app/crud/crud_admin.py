@@ -50,3 +50,8 @@ async def create_building(building_data: BuildingCreate, db: AsyncSession) -> Bu
     await db.commit()
     await db.refresh(new_building)
     return new_building
+
+async def get_all_buildings(db: AsyncSession):
+    result = await db.execute(select(Building))
+    buildings = result.scalars().all()
+    return buildings

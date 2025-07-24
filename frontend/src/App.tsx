@@ -16,6 +16,8 @@ import UsersList from './views/Settings/UsersList'
 import AdminSettingsLayout from './layouts/AdminSettingsLayout'
 import MyCompaniesView from './views/MyCompanies/MyCompaniesView'
 import AllOrdersView from './views/OrdersView/AllOrdersView'
+import CompanysOrdersView from './views/OrdersView/CompanysOrdersView'
+import SingleOrderView from './views/OrdersView/SingleOrderView'
 
 function App() {
   const { t } = useTranslation()
@@ -46,10 +48,13 @@ function App() {
           <Route path={t('paths.myCompanies')} element={<MyCompaniesView />} />
           <Route path={t('paths.allOrders')} element={<AllOrdersView />} />
 
-          <Route
-            path={`${t('paths.singleCompany')}/:id`}
-            element={<SingleCompanyView />}
-          />
+          <Route path={`${t('paths.singleCompany')}/:companyId`}>
+            <Route path="" element={<SingleCompanyView />} />
+            <Route path={t('paths.orders')}>
+              <Route path="" element={<CompanysOrdersView />} />
+              <Route path=":orderId" element={<SingleOrderView />} />
+            </Route>
+          </Route>
           <Route path={t('paths.settings')} element={<AdminSettingsLayout />}>
             <Route path="" element={<AdminSettings />} />
             <Route path={t('paths.usersList')}>
