@@ -90,6 +90,7 @@ class Order(Base):
     order_rows = relationship("OrderRow", back_populates="order")
     invoices = relationship("Invoice", back_populates="order")
 
+
 class Contract(Base):
     __tablename__ = 'contracts'
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
@@ -102,6 +103,7 @@ class Contract(Base):
 
     order = relationship("Order", back_populates="contracts")
 
+
 class Material(Base):
     __tablename__ = 'materials'
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
@@ -112,6 +114,7 @@ class Material(Base):
     order_id = Column(GUID(), ForeignKey('orders.id'), index=True)
 
     order = relationship("Order", back_populates="materials")
+    
 
 class ArrivalInfo(Base):
     __tablename__ = 'arrival_info'
@@ -125,6 +128,7 @@ class ArrivalInfo(Base):
 
     order = relationship("Order", back_populates="arrival_infos")
 
+
 class Building(Base):
     __tablename__ = 'buildings'
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
@@ -132,6 +136,7 @@ class Building(Base):
     location = Column(String(255), nullable=False)
 
     orders = relationship("Order", back_populates="building")
+    
 
 class ExhibitionYear(Base):
     __tablename__ = 'exhibition_years'
@@ -146,6 +151,7 @@ class ExhibitionYear(Base):
 
     orders = relationship("Order", back_populates="exhibition_year")
     products = relationship("Product", back_populates="exhibition_year")
+    
 
 class OrderRow(Base):
     __tablename__ = 'order_rows'
@@ -157,6 +163,7 @@ class OrderRow(Base):
 
     order = relationship("Order", back_populates="order_rows")
     product = relationship("Product", back_populates="order_rows")
+    
 
 class Product(Base):
     __tablename__ = 'products'
@@ -169,6 +176,7 @@ class Product(Base):
 
     exhibition_year = relationship("ExhibitionYear", back_populates="products")
     order_rows = relationship("OrderRow", back_populates="product")
+    
 
 class Invoice(Base):
     __tablename__ = 'invoices'
@@ -183,6 +191,7 @@ class Invoice(Base):
     special_info = Column(Text)
 
     order = relationship("Order", back_populates="invoices")
+    
 
 @event.listens_for(ExhibitionYear, "before_insert")
 @event.listens_for(ExhibitionYear, "before_update")

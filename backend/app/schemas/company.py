@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from uuid import UUID
+from datetime import date
 
 class CompanyCreate(BaseModel):
     name: str
@@ -20,6 +21,27 @@ class CompanyResponse(BaseModel):
     display_name: Optional[str]
     exhibition_year_id: UUID
     coordinator_id: Optional[UUID]
+
+    class Config:
+        orm_mode = True
+
+class CompanyDetailResponse(BaseModel):
+    id: UUID
+    name: str
+    display_name: Optional[str]
+    business_id: str
+    booth_size: Optional[str]
+    coordinator_name: Optional[str]
+    contact_received: bool
+    contract_returned_date: Optional[date]
+    arrival_info_date: Optional[date]
+    invoice_sent_date: Optional[date]
+    invoice_paid_date: Optional[date]
+    special_requests: Optional[str]
+    latest_comment: Optional[str]
+    material_returned_date: Optional[date]
+    first_day_booth: Optional[str]
+    second_day_booth: Optional[str]
 
     class Config:
         orm_mode = True

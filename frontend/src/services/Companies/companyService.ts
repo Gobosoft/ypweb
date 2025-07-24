@@ -35,7 +35,17 @@ const getAllCompanies = async (): Promise<Company[] | null> => {
   }
 }
 
+const getCompanyById = async (id: string): Promise<Company | null> => {
+  try {
+    const response = await axiosInstance.get<Company>(`${baseUrl}/${id}`)
+    return response.data
+  } catch (error) {
+    return null
+  }
+}
+
 export default {
   createCompany,
   getAllCompanies,
+  getCompanyById,
 }
