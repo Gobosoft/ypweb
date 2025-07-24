@@ -12,6 +12,7 @@ from app.api.users import router as users_router
 from app.api.admin import router as admin_router
 from app.api.companies import router as companies_router
 from app.api.orders import router as orders_router
+from app.api.products import router as products_router
 
 load_dotenv()
 
@@ -45,6 +46,7 @@ app.include_router(users_router, prefix="/api/users", tags=["users"])
 app.include_router(admin_router, prefix="/api/admin", tags=["admin"])
 app.include_router(companies_router, prefix="/api/companies", tags=["companies"])
 app.include_router(orders_router, prefix="/api/orders", tags=["orders"])
+app.include_router(products_router, prefix="/api/products", tags=["products"])
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):

@@ -175,7 +175,7 @@ class Invoice(Base):
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     order_id = Column(GUID(), ForeignKey('orders.id'), index=True)
     sum = Column(Float, nullable=False)
-    date = Column(Date, nullable=False)
+    invoice_date = Column(Date, nullable=False)
     due_date = Column(Date, nullable=False)
     is_sent = Column(Boolean, nullable=False)
     is_paid = Column(Boolean, default=False, nullable=False)

@@ -1,7 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import CreateExhibitionYearForm from 'src/components/AdminSettings/CreateExhibitionYearForm'
+import CreateProductForm from 'src/components/AdminSettings/CreateProductForm'
 import ExhibitionYearList from 'src/components/AdminSettings/ExhibitionYearList'
+import ProductsList from 'src/components/AdminSettings/ProductsList'
 import { Button } from 'src/components/ui/button'
 import {
   Dialog,
@@ -15,6 +17,30 @@ import i18n from 'src/i18n'
 const AdminSettings = () => {
   return (
     <div className="p-4">
+      <h2 className="text-xl font-semibold mb-4">
+        {i18n.t('settingsView.title')}
+      </h2>
+      <div className="flex flex-wrap gap-2 justify-between">
+        <h2 className="text-xl font-semibold mb-4">
+          {i18n.t('settingsView.products')}
+        </h2>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>{i18n.t('settingsView.addProduct')}</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{i18n.t('settingsView.addProduct')}</DialogTitle>
+            </DialogHeader>
+            <div>
+              <CreateProductForm />
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <ProductsList />
+
       <div className="flex flex-wrap gap-2 justify-between">
         <h2 className="text-xl font-semibold mb-4">
           {i18n.t('settingsView.exhibitionYears')}
