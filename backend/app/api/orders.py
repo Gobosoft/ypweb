@@ -5,7 +5,9 @@ from app.crud.crud_orders import (create_order, get_all_orders, update_order,
                                   get_orders_by_company_id, get_order_by_id,
                                   create_arrival_info, create_contract,
                                   create_material, create_invoice, create_order_row,
-                                  get_order_rows_by_order_id)
+                                  get_order_rows_by_order_id, get_contracts_by_order_id,
+                                  get_arrival_infos_by_order_id, get_materials_by_order_id,
+                                  get_invoices_by_order_id)
 from app.schemas.orders import (OrderCreate, OrderResponse, OrderUpdate, ContractCreate, MaterialCreate,
                                 ArrivalInfoCreate, InvoiceCreate, OrderRowCreate,
                                 OrderRowRead)
@@ -87,3 +89,19 @@ async def create_order_row_endpoint(
 @router.get("/{order_id}/order-rows", response_model=list[OrderRowRead])
 async def get_order_rows_by_order_id_endpoint(order_id: UUID, db: AsyncSession = Depends(get_db)):
     return await get_order_rows_by_order_id(order_id=order_id, db=db)
+
+@router.get("/{order_id}/materials")
+async def get_materials_by_order_id_endpoint(order_id: UUID, db: AsyncSession = Depends(get_db)):
+    return await get_materials_by_order_id(order_id=order_id, db=db)
+
+@router.get("/{order_id}/arrival-infos")
+async def get_arrival_infos_by_order_id_endpoint(order_id: UUID, db: AsyncSession = Depends(get_db)):
+    return await get_arrival_infos_by_order_id(order_id=order_id, db=db)
+
+@router.get("/{order_id}/contracts")
+async def get_contracts_by_order_id_endpoint(order_id: UUID, db: AsyncSession = Depends(get_db)):
+    return await get_contracts_by_order_id(order_id=order_id, db=db)
+
+@router.get("/{order_id}/invoices")
+async def get_invoices_by_order_id_endpoint(order_id: UUID, db: AsyncSession = Depends(get_db)):
+    return await get_invoices_by_order_id(order_id=order_id, db=db)

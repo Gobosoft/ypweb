@@ -1,5 +1,12 @@
 import axiosInstance from 'src/axiosConfig'
-import { Order, OrderRow } from 'src/lib/types'
+import {
+  ArrivalInfo,
+  Contract,
+  Invoice,
+  Material,
+  Order,
+  OrderRow,
+} from 'src/lib/types'
 
 const baseUrl = '/api/orders'
 
@@ -18,6 +25,17 @@ const getByCompanyId = (companyId: string) => {
 }
 
 const getById = (id: string) => axiosInstance.get<Order>(`${baseUrl}/${id}`)
+
+const getMaterialsByOrderId = (orderId: string) =>
+  axiosInstance.get<Material[]>(`${baseUrl}/${orderId}/materials`)
+const getContractsByOrderId = (orderId: string) =>
+  axiosInstance.get<Contract[]>(`${baseUrl}/${orderId}/contracts`)
+const getArrivalInfosByOrderId = (orderId: string) =>
+  axiosInstance.get<ArrivalInfo[]>(`${baseUrl}/${orderId}/arrival-infos`)
+
+const getInvoicesByOrderId = (orderId: string) =>
+  axiosInstance.get<Invoice[]>(`${baseUrl}/${orderId}/invoices`)
+
 const updateOrder = (id: string, order: Partial<Order>) =>
   axiosInstance.put(`${baseUrl}/update/${id}`, order)
 
@@ -40,4 +58,8 @@ export default {
   updateOrder,
   createOrderRow,
   getOrderRowsByOrderId,
+  getMaterialsByOrderId,
+  getContractsByOrderId,
+  getArrivalInfosByOrderId,
+  getInvoicesByOrderId,
 }

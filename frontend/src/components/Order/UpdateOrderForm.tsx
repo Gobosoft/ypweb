@@ -57,7 +57,7 @@ const UpdateOrderForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="p-6 space-y-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold">Update Order</h1>
+      <h1 className="text-2xl font-bold">Update Order {order.id}</h1>
 
       <div>
         <Label htmlFor="order_date">Order Date</Label>

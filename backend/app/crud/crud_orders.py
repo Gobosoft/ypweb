@@ -140,3 +140,31 @@ async def get_order_rows_by_order_id(order_id: UUID, db: AsyncSession):
     result = await db.execute(select(OrderRow).where(OrderRow.order_id == order_id))
     order_rows = result.scalars().all()
     return order_rows
+
+async def get_materials_by_order_id(order_id: UUID, db: AsyncSession):
+    await get_order_or_404(order_id, db)
+
+    result = await db.execute(select(Material).where(Material.order_id == order_id))
+    materials = result.scalars().all()
+    return materials
+
+async def get_arrival_infos_by_order_id(order_id: UUID, db: AsyncSession):
+    await get_order_or_404(order_id, db)
+
+    result = await db.execute(select(ArrivalInfo).where(ArrivalInfo.order_id == order_id))
+    arrival_infos = result.scalars().all()
+    return arrival_infos
+
+async def get_contracts_by_order_id(order_id: UUID, db: AsyncSession):
+    await get_order_or_404(order_id, db)
+
+    result = await db.execute(select(Contract).where(Contract.order_id == order_id))
+    contracts = result.scalars().all()
+    return contracts
+
+async def get_invoices_by_order_id(order_id: UUID, db: AsyncSession):
+    await get_order_or_404(order_id, db)
+
+    result = await db.execute(select(Invoice).where(Invoice.order_id == order_id))
+    invoices = result.scalars().all()
+    return invoices

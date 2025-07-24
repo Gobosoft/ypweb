@@ -46,6 +46,7 @@ const OrderRowsTable = () => {
 
   return (
     <div className="overflow-x-auto">
+      <h2>Tilausrivit</h2>
       <Table>
         <TableHeader>
           <TableRow>
