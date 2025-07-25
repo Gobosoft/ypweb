@@ -1,9 +1,10 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from uuid import UUID
 from datetime import date
 from app.core.utils.types import ContactStatusEnum
 from datetime import datetime
+from app.schemas.contact import ContactResponse
 
 class CompanyCreate(BaseModel):
     name: str
@@ -31,6 +32,9 @@ class CompanyContactLogPreview(BaseModel):
     text: str
     updated_at: datetime
     contact_status: Optional[ContactStatusEnum]
+    
+    class Config:
+        from_attributes = True  
 
 class CompanyDetailResponse(BaseModel):
     id: UUID
@@ -48,6 +52,7 @@ class CompanyDetailResponse(BaseModel):
     material_returned_date: Optional[date]
     first_day_booth: Optional[str]
     second_day_booth: Optional[str]
+    contacts: List[ContactResponse] = []
     latest_contact_log: Optional[CompanyContactLogPreview]
 
     class Config:

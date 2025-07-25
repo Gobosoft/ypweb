@@ -65,6 +65,15 @@ export interface LatestContactLog {
   contact_status?: ContactStatus
 }
 
+export interface Contact {
+  id: string
+  name: string
+  email: string
+  phone?: string
+  is_primary: boolean
+  description: string
+}
+
 export interface CompanyDetail {
   id: string
   name: string
@@ -81,6 +90,7 @@ export interface CompanyDetail {
   material_returned_date?: string
   first_day_booth?: string
   second_day_booth?: string
+  contacts: Contact[]
   latest_contact_log?: LatestContactLog
 }
 

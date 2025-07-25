@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import ContactCard from 'src/components/Contact/ContactCard'
 import CompanyInfoCard from 'src/components/Company/CompanyInfoCard'
 import ContactStatusCard from 'src/components/Contact/ContactStatusCard'
@@ -10,7 +10,6 @@ import companyService from 'src/services/Companies/companyService'
 import { CompanyDetail } from 'src/lib/types'
 import SmallLoadingCircleOnly from 'src/components/Loading/SmallLoadingCircle'
 import { toast } from 'react-toastify'
-import { Link } from 'react-router-dom'
 import i18n from 'src/i18n'
 
 const SingleCompanyView = () => {
@@ -70,29 +69,34 @@ const SingleCompanyView = () => {
           <Button>Muokkaa tietoja</Button>
         </div>
       </div>
-
-      {/* Yhteyshenkilöt (kovakoodatut vielä tässä vaiheessa) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <ContactCard
-          name="Maria Virtanen"
-          role="Country Recruiting Manager, vaihteesta saatu"
-          email="maria.virtanen@codenestlabs.com"
-          phone="04512345678"
-          updated="11.12.2024"
-        />
-        <ContactCard
-          name="Pekka Korhonen"
-          role="CEO, ollut Yrityspäivillä 2011 tiimissä"
-          email="pekka.korhonen@codenestlabs.com"
-          phone="04512345678"
-          updated="11.12.2021"
-        />
+        {company.contacts.map((contact) => (
+          <ContactCard
+            key={`${contact.id}-${contact.name}-${contact.email}-${contact.phone ?? ''}`}
+            contact={contact}
+            companyId={company.id}
+            onUpdate={fetchCompany}
+          />
+        ))}
+        {Array.from({ length: Math.max(0, 2 - company.contacts.length) }).map(
+          (_, idx) => (
+            <ContactCard
+              key={`placeholder-${idx}`}
+              contact={{
+                id: `placeholder-${idx}`,
+                name: '–',
+                email: '–',
+                phone: '–',
+                is_primary: false,
+                description: '',
+              }}
+              companyId={company.id}
+              isPlaceholder
+            />
+          )
+        )}
       </div>
-
-      {/* Yrityksen status & yhteystila */}
       <CompanyInfoCard company={company} />
-
-      {/* Alatiedot kortteina */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <ContactStatusCard company={company} refetch={fetchCompany} />
         <OrderDetailsCard />

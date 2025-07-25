@@ -6,6 +6,7 @@ from typing import List
 from uuid import UUID
 from app.models import Company, ExhibitionYear, User, Order
 from app.schemas.company import CompanyCreate, CompanyDetailResponse
+from app.schemas.contact import ContactResponse
 from app.core.utils.types import CompanyStatus
 
 
@@ -72,6 +73,7 @@ async def get_company_detail_by_id(db: AsyncSession, company_id: UUID) -> Compan
     result = await db.execute(
         select(Company)
         .options(
+            joinedload(Company.contacts),
             joinedload(Company.coordinator),
             joinedload(Company.contact_logs),
             joinedload(Company.orders).joinedload(Order.contracts),
@@ -110,6 +112,7 @@ async def get_company_detail_by_id(db: AsyncSession, company_id: UUID) -> Compan
         material_returned_date=order.materials[0].returned_date if order and order.materials else None,
         first_day_booth=company.booth_size,
         second_day_booth=None,
+        contacts=[ContactResponse.from_orm(contact) for contact in company.contacts],
         latest_contact_log={
             "text": latest_log.text,
             "updated_at": latest_log.updated_at,

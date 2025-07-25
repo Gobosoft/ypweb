@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    Column, String, Boolean, ForeignKey,
+    Column, String, Boolean, ForeignKey, Text,
     DateTime, Text, Float, Enum as SQLEnum, Index, Date, event, Integer
 )
 import uuid
@@ -40,7 +40,8 @@ class Contact(Base):
     phone = Column(String(50))
     is_primary = Column(Boolean, default=False)
     company_id = Column(GUID(), ForeignKey('companies.id'), index=True)
-
+    description = Column(Text)
+    
     company = relationship("Company", back_populates="contacts")
     
 
