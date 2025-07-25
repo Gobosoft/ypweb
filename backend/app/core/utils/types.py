@@ -28,3 +28,10 @@ class MaterialType(str, Enum):
     LOGO = "LOGO"
     AD = "AD"
     OTHER = "OTHER"
+    
+class ContactStatusEnum(str, Enum):
+    NO = "no"
+    NO_TRIED = "no_tried"
+    YES_GOING = "yes_going"
+    YES_NOT_GOING = "yes_not_going"
+    CALL_AGAIN = "call_again"

@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    Column, String, Boolean, ForeignKey,
+    Column, String, Boolean, ForeignKey, Text,
     DateTime, Text, Float, Enum as SQLEnum, Index, Date, event, Integer
 )
 import uuid
@@ -24,7 +24,7 @@ class Company(Base):
 
     coordinator = relationship("User", back_populates="assigned_companies")
     contacts = relationship("Contact", back_populates="company")
-    comments = relationship("Comment", back_populates="company")
+    contact_logs = relationship("CompanyContactLog", back_populates="company")
     orders = relationship("Order", back_populates="company")
 
     __table_args__ = (
@@ -40,8 +40,25 @@ class Contact(Base):
     phone = Column(String(50))
     is_primary = Column(Boolean, default=False)
     company_id = Column(GUID(), ForeignKey('companies.id'), index=True)
-
+    description = Column(Text)
+    
     company = relationship("Company", back_populates="contacts")
+    
+
+class CompanyContactLog(Base):
+    __tablename__ = 'company_contact_logs'
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    text = Column(Text)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), index=True)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc),
+                        onupdate=lambda: datetime.now(timezone.utc), nullable=False)
+    company_id = Column(GUID(), ForeignKey('companies.id'), index=True)
+    user_id = Column(GUID(), ForeignKey('users.id'), index=True)
+    contact_status = Column(String(50), nullable=True)
+
+    company = relationship("Company", back_populates="contact_logs")
+    user = relationship("User")
 
 
 class User(Base):
@@ -57,16 +74,7 @@ class User(Base):
                         onupdate=lambda: datetime.now(timezone.utc), nullable=False)
 
     assigned_companies = relationship("Company", back_populates="coordinator")
-
-
-class Comment(Base):
-    __tablename__ = 'comments'
-    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
-    text = Column(Text)
-    created_at = Column(DateTime, index=True)
-    company_id = Column(GUID(), ForeignKey('companies.id'), index=True)
-
-    company = relationship("Company", back_populates="comments")
+    contact_logs = relationship("CompanyContactLog", back_populates="user")
 
 
 class Order(Base):
@@ -90,6 +98,7 @@ class Order(Base):
     order_rows = relationship("OrderRow", back_populates="order")
     invoices = relationship("Invoice", back_populates="order")
 
+
 class Contract(Base):
     __tablename__ = 'contracts'
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
@@ -102,6 +111,7 @@ class Contract(Base):
 
     order = relationship("Order", back_populates="contracts")
 
+
 class Material(Base):
     __tablename__ = 'materials'
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
@@ -112,6 +122,7 @@ class Material(Base):
     order_id = Column(GUID(), ForeignKey('orders.id'), index=True)
 
     order = relationship("Order", back_populates="materials")
+    
 
 class ArrivalInfo(Base):
     __tablename__ = 'arrival_info'
@@ -125,6 +136,7 @@ class ArrivalInfo(Base):
 
     order = relationship("Order", back_populates="arrival_infos")
 
+
 class Building(Base):
     __tablename__ = 'buildings'
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
@@ -132,6 +144,7 @@ class Building(Base):
     location = Column(String(255), nullable=False)
 
     orders = relationship("Order", back_populates="building")
+    
 
 class ExhibitionYear(Base):
     __tablename__ = 'exhibition_years'
@@ -146,6 +159,7 @@ class ExhibitionYear(Base):
 
     orders = relationship("Order", back_populates="exhibition_year")
     products = relationship("Product", back_populates="exhibition_year")
+    
 
 class OrderRow(Base):
     __tablename__ = 'order_rows'
@@ -157,6 +171,7 @@ class OrderRow(Base):
 
     order = relationship("Order", back_populates="order_rows")
     product = relationship("Product", back_populates="order_rows")
+    
 
 class Product(Base):
     __tablename__ = 'products'
@@ -169,6 +184,7 @@ class Product(Base):
 
     exhibition_year = relationship("ExhibitionYear", back_populates="products")
     order_rows = relationship("OrderRow", back_populates="product")
+    
 
 class Invoice(Base):
     __tablename__ = 'invoices'
@@ -183,6 +199,7 @@ class Invoice(Base):
     special_info = Column(Text)
 
     order = relationship("Order", back_populates="invoices")
+    
 
 @event.listens_for(ExhibitionYear, "before_insert")
 @event.listens_for(ExhibitionYear, "before_update")
