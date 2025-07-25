@@ -24,7 +24,7 @@ class Company(Base):
 
     coordinator = relationship("User", back_populates="assigned_companies")
     contacts = relationship("Contact", back_populates="company")
-    comments = relationship("Comment", back_populates="company")
+    contact_logs = relationship("CompanyContactLog", back_populates="company")
     orders = relationship("Order", back_populates="company")
 
     __table_args__ = (
@@ -42,6 +42,22 @@ class Contact(Base):
     company_id = Column(GUID(), ForeignKey('companies.id'), index=True)
 
     company = relationship("Company", back_populates="contacts")
+    
+
+class CompanyContactLog(Base):
+    __tablename__ = 'company_contact_logs'
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    text = Column(Text)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), index=True)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc),
+                        onupdate=lambda: datetime.now(timezone.utc), nullable=False)
+    company_id = Column(GUID(), ForeignKey('companies.id'), index=True)
+    user_id = Column(GUID(), ForeignKey('users.id'), index=True)
+    contact_status = Column(String(50), nullable=True)
+
+    company = relationship("Company", back_populates="contact_logs")
+    user = relationship("User")
 
 
 class User(Base):
@@ -57,16 +73,7 @@ class User(Base):
                         onupdate=lambda: datetime.now(timezone.utc), nullable=False)
 
     assigned_companies = relationship("Company", back_populates="coordinator")
-
-
-class Comment(Base):
-    __tablename__ = 'comments'
-    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
-    text = Column(Text)
-    created_at = Column(DateTime, index=True)
-    company_id = Column(GUID(), ForeignKey('companies.id'), index=True)
-
-    company = relationship("Company", back_populates="comments")
+    contact_logs = relationship("CompanyContactLog", back_populates="user")
 
 
 class Order(Base):

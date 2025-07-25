@@ -1,5 +1,5 @@
 import axiosInstance from 'src/axiosConfig'
-import { Company } from 'src/lib/types'
+import { Company, CompanyDetail } from 'src/lib/types'
 
 const baseUrl = '/api/companies'
 
@@ -44,8 +44,23 @@ const getCompanyById = async (id: string): Promise<Company | null> => {
   }
 }
 
+const getCompanyDetailById = async (
+  id: string
+): Promise<CompanyDetail | null> => {
+  try {
+    const response = await axiosInstance.get<CompanyDetail>(
+      `${baseUrl}/detail/${id}`
+    )
+    return response.data
+  } catch (error) {
+    console.error('Failed to fetch company detail:', error)
+    return null
+  }
+}
+
 export default {
   createCompany,
   getAllCompanies,
   getCompanyById,
+  getCompanyDetailById,
 }

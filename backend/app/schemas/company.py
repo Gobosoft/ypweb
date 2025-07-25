@@ -2,6 +2,8 @@ from pydantic import BaseModel
 from typing import Optional
 from uuid import UUID
 from datetime import date
+from app.core.utils.types import ContactStatusEnum
+from datetime import datetime
 
 class CompanyCreate(BaseModel):
     name: str
@@ -25,6 +27,11 @@ class CompanyResponse(BaseModel):
     class Config:
         orm_mode = True
 
+class CompanyContactLogPreview(BaseModel):
+    text: str
+    updated_at: datetime
+    contact_status: Optional[ContactStatusEnum]
+
 class CompanyDetailResponse(BaseModel):
     id: UUID
     name: str
@@ -38,10 +45,10 @@ class CompanyDetailResponse(BaseModel):
     invoice_sent_date: Optional[date]
     invoice_paid_date: Optional[date]
     special_requests: Optional[str]
-    latest_comment: Optional[str]
     material_returned_date: Optional[date]
     first_day_booth: Optional[str]
     second_day_booth: Optional[str]
+    latest_contact_log: Optional[CompanyContactLogPreview]
 
     class Config:
         orm_mode = True

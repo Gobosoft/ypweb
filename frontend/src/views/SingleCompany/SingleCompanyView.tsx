@@ -1,40 +1,45 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ContactCard from 'src/components/Contact/ContactCard'
-import ContactInfoCard from 'src/components/Contact/ContactInfoCard'
+import CompanyInfoCard from 'src/components/Company/CompanyInfoCard'
+import ContactStatusCard from 'src/components/Contact/ContactStatusCard'
 import OrderDetailsCard from 'src/components/Order/OrderDetailsCard'
 import CompanyNotesCard from 'src/components/Company/CompanyNotesCard'
 import { Button } from 'src/components/ui/button'
-import { Card } from 'src/components/ui/card'
 import companyService from 'src/services/Companies/companyService'
-import { Company } from 'src/lib/types'
+import { CompanyDetail } from 'src/lib/types'
 import SmallLoadingCircleOnly from 'src/components/Loading/SmallLoadingCircle'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 import i18n from 'src/i18n'
 
 const SingleCompanyView = () => {
-  const { id: companyId } = useParams<{ id: string }>()
-  const [company, setCompany] = useState<Company | null>(null)
+  const { companyId } = useParams()
+  const [company, setCompany] = useState<CompanyDetail | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
-  useEffect(() => {
-    const fetchCompany = async () => {
-      if (!companyId) return
-      try {
-        const result = await companyService.getCompanyById(companyId)
-        if (result) {
-          setCompany(result)
-        } else {
-          toast.error('Yrityksen tietoja ei löytynyt')
-        }
-      } catch (err) {
-        toast.error('Virhe haettaessa yrityksen tietoja')
-      } finally {
-        setLoading(false)
-      }
+  const fetchCompany = async () => {
+    if (!companyId) {
+      toast.error('Virheellinen yrityksen tunniste')
+      return
     }
 
+    try {
+      setLoading(true)
+      const result = await companyService.getCompanyDetailById(companyId)
+      if (result) {
+        setCompany(result)
+      } else {
+        toast.error('Yrityksen tietoja ei löytynyt')
+      }
+    } catch (err) {
+      toast.error('Virhe haettaessa yrityksen tietoja')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
     fetchCompany()
   }, [companyId])
 
@@ -66,9 +71,8 @@ const SingleCompanyView = () => {
         </div>
       </div>
 
-      {/* Yhteyshenkilöt */}
+      {/* Yhteyshenkilöt (kovakoodatut vielä tässä vaiheessa) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Tämä pitää myöhemmin korvata dynaamisella contact-haulla */}
         <ContactCard
           name="Maria Virtanen"
           role="Country Recruiting Manager, vaihteesta saatu"
@@ -85,23 +89,12 @@ const SingleCompanyView = () => {
         />
       </div>
 
-      {/* Tilat ja koordinaattori */}
-      <ContactInfoCard />
+      {/* Yrityksen status & yhteystila */}
+      <CompanyInfoCard company={company} />
 
       {/* Alatiedot kortteina */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="col-span-1 md:col-span-1">
-          <div className="p-4">
-            <h4 className="font-semibold mb-2">Yhteydenotot yritykseen</h4>
-            <p className="text-sm text-muted-foreground mb-1">
-              päivitetty viimeksi 10.9.2025
-            </p>
-            <p className="text-sm">
-              10.9.2025 – Maria Virtaseen saatu yhteys. Lähtivät mukaan. / Matti
-              H
-            </p>
-          </div>
-        </Card>
+        <ContactStatusCard company={company} refetch={fetchCompany} />
         <OrderDetailsCard />
         <CompanyNotesCard />
       </div>

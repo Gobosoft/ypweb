@@ -63,7 +63,7 @@ async def read_company_by_id(
 
 @router.get("/detail/{company_id}", response_model=CompanyDetailResponse)
 async def company_detail(
-    company_id: str,
+    company_id: UUID,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(login_required),
 ):

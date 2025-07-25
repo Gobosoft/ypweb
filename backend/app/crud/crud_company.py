@@ -69,16 +69,16 @@ async def get_company_by_id(db: AsyncSession, company_id: UUID) -> Company:
     return company
 
 async def get_company_detail_by_id(db: AsyncSession, company_id: UUID) -> CompanyDetailResponse:
-    # Hae yritys ja siihen liittyvät tiedot
     result = await db.execute(
         select(Company)
         .options(
             joinedload(Company.coordinator),
-            joinedload(Company.comments),
+            joinedload(Company.contact_logs),
             joinedload(Company.orders).joinedload(Order.contracts),
             joinedload(Company.orders).joinedload(Order.materials),
             joinedload(Company.orders).joinedload(Order.arrival_infos),
             joinedload(Company.orders).joinedload(Order.invoices),
+            joinedload(Company.contacts),
         )
         .filter(Company.id == company_id)
     )
@@ -87,25 +87,12 @@ async def get_company_detail_by_id(db: AsyncSession, company_id: UUID) -> Compan
     if not company:
         raise HTTPException(status_code=404, detail="Company not found")
 
-    # Yksi tilaus / vuosi oletuksena
     order = company.orders[0] if company.orders else None
 
-    # Poimi tiedot
-    latest_comment = (
-        sorted(company.comments, key=lambda c: c.created_at, reverse=True)[0].text
-        if company.comments else None
+    latest_log = (
+        sorted(company.contact_logs, key=lambda log: log.updated_at, reverse=True)[0]
+        if company.contact_logs else None
     )
-    contract_date = (
-        order.contracts[0].returned_date if order and order.contracts else None
-    )
-    material_date = (
-        order.materials[0].returned_date if order and order.materials else None
-    )
-    arrival_date = (
-        order.arrival_infos[0].returned_date if order and order.arrival_infos else None
-    )
-    invoice_sent = next((i.date for i in order.invoices if i.is_sent), None) if order else None
-    invoice_paid = next((i.date for i in order.invoices if i.is_paid), None) if order else None
 
     return CompanyDetailResponse(
         id=company.id,
@@ -114,14 +101,18 @@ async def get_company_detail_by_id(db: AsyncSession, company_id: UUID) -> Compan
         business_id=company.business_id,
         booth_size=company.booth_size,
         coordinator_name=company.coordinator.name if company.coordinator else None,
-        contact_received=True if company.contacts else False,
-        contract_returned_date=contract_date,
-        arrival_info_date=arrival_date,
-        invoice_sent_date=invoice_sent,
-        invoice_paid_date=invoice_paid,
+        contact_received=bool(company.contact_logs),
+        contract_returned_date=order.contracts[0].returned_date if order and order.contracts else None,
+        arrival_info_date=order.arrival_infos[0].returned_date if order and order.arrival_infos else None,
+        invoice_sent_date=next((i.date for i in order.invoices if i.is_sent), None) if order else None,
+        invoice_paid_date=next((i.date for i in order.invoices if i.is_paid), None) if order else None,
         special_requests=company.special_requests,
-        latest_comment=latest_comment,
-        material_returned_date=material_date,
-        first_day_booth=company.booth_size,  # yksinkertaistettu; tarkempi logiikka tarvittaessa
-        second_day_booth=None  # voit lisätä tämän logiikan jos tiedot saatavilla
+        material_returned_date=order.materials[0].returned_date if order and order.materials else None,
+        first_day_booth=company.booth_size,
+        second_day_booth=None,
+        latest_contact_log={
+            "text": latest_log.text,
+            "updated_at": latest_log.updated_at,
+            "contact_status": latest_log.contact_status,
+        } if latest_log else None
     )

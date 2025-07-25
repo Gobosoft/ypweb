@@ -51,6 +51,39 @@ export interface Company {
   coordinator_id?: string
 }
 
+export enum ContactStatus {
+  NO = 'no',
+  NO_TRIED = 'no_tried',
+  YES_GOING = 'yes_going',
+  YES_NOT_GOING = 'yes_not_going',
+  CALL_AGAIN = 'call_again',
+}
+
+export interface LatestContactLog {
+  text: string
+  updated_at: string
+  contact_status?: ContactStatus
+}
+
+export interface CompanyDetail {
+  id: string
+  name: string
+  display_name?: string
+  business_id: string
+  booth_size?: string
+  coordinator_name?: string
+  contact_received: boolean
+  contract_returned_date?: string
+  arrival_info_date?: string
+  invoice_sent_date?: string
+  invoice_paid_date?: string
+  special_requests?: string
+  material_returned_date?: string
+  first_day_booth?: string
+  second_day_booth?: string
+  latest_contact_log?: LatestContactLog
+}
+
 export type Order = {
   id: string
   order_date: string
