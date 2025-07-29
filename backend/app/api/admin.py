@@ -6,7 +6,8 @@ from app.crud.crud_user import (login_required, it_user_role_required, set_acces
 from app.db.session import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.crud_admin import (create_exhibition_year, get_all_exhibition_years,
-                                 activate_exhibition_year, create_building)
+                                 activate_exhibition_year, create_building,
+                                 get_all_buildings)
 from app.schemas.exhibition_year import (ExhibitionYearCreate)
 from app.schemas.user import (UserRegistrationModel)
 from app.schemas.buildings import (BuildingCreate)
@@ -84,3 +85,10 @@ async def create_building_endpoint(
 ):
     new_building = await create_building(building, db)
     return new_building
+
+@router.get("/buildings")
+async def list_buildings(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(login_required)
+):
+    return await get_all_buildings(db=db)

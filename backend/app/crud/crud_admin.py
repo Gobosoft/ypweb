@@ -28,6 +28,10 @@ async def get_all_exhibition_years(db: AsyncSession):
     result = await db.execute(select(ExhibitionYear).order_by(ExhibitionYear.year.desc()))
     return result.scalars().all()
 
+async def get_all_buildings(db: AsyncSession):
+    result = await db.execute(select(Building))
+    return result.scalars().all()
+
 async def activate_exhibition_year(db: AsyncSession, year_id: UUID):
     year = await db.get(ExhibitionYear, year_id)
     if not year:

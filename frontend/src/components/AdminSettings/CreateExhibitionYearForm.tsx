@@ -38,7 +38,7 @@ const CreateExhibitionYearForm = () => {
   return (
     <Card className="max-w-xl w-full mx-auto mt-6">
       <CardTitle className="text-center">
-        {i18n.t('createExhibitionYear')}
+        {i18n.t('settingsView.createExhibitionYear')}
       </CardTitle>
       <Separator className="my-3" />
       <CardContent>

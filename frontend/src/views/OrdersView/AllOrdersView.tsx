@@ -34,10 +34,10 @@ const AllOrdersView = () => {
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
-            <TableHead>Order Date</TableHead>
-            <TableHead>Type</TableHead>
+            <TableHead>Tilauspäivä</TableHead>
+            <TableHead>Tyyppi</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Attendance</TableHead>
+            <TableHead>Osallistuminen</TableHead>
             <TableHead>Portal UUID</TableHead>
           </TableRow>
         </TableHeader>

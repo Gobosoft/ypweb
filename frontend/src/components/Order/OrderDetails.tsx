@@ -53,22 +53,22 @@ const OrderDetails = () => {
       <div className="space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle>Materials</CardTitle>
+            <CardTitle>Materiaalit</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {materials.length === 0 ? (
-              <p className="text-muted-foreground">No materials found.</p>
+              <p className="text-muted-foreground">Ei materiaaleja.</p>
             ) : (
               materials.map((mat) => (
                 <div key={mat.id} className="border rounded p-2">
                   <p>
-                    <strong>Type:</strong> {mat.type}
+                    <strong>Tyyppi:</strong> {mat.type}
                   </p>
                   <p>
-                    <strong>File:</strong> {mat.file_name}
+                    <strong>Tiedosto:</strong> {mat.file_name}
                   </p>
                   <p>
-                    <strong>Returned:</strong>{' '}
+                    <strong>Palautettu:</strong>{' '}
                     {new Date(mat.returned_date).toLocaleDateString()}
                   </p>
                   <a
@@ -77,7 +77,7 @@ const OrderDetails = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Download
+                    Lataa
                   </a>
                 </div>
               ))
@@ -90,30 +90,29 @@ const OrderDetails = () => {
       <div className="space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle>Arrival Info</CardTitle>
+            <CardTitle>Saapumistiedot</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {arrivalInfos.length === 0 ? (
-              <p className="text-muted-foreground">
-                No arrival info submitted.
-              </p>
+              <p className="text-muted-foreground">Ei saapumistietoja.</p>
             ) : (
               arrivalInfos.map((info) => (
                 <div key={info.id} className="border rounded p-2">
                   <p>
-                    <strong>Lunch:</strong> {info.lunch_count}
+                    <strong>Lounas:</strong> {info.lunch_count}
                   </p>
                   <p>
                     <strong>Cocktail:</strong> {info.cocktail_count}
                   </p>
                   <p>
-                    <strong>Dietary:</strong> {info.dietary_restrictions}
+                    <strong>Erikoisruokavaliot:</strong>{' '}
+                    {info.dietary_restrictions}
                   </p>
                   <p>
-                    <strong>Goods:</strong> {info.goods_sending}
+                    <strong>Tavaran lähettäminen:</strong> {info.goods_sending}
                   </p>
                   <p>
-                    <strong>Returned:</strong>{' '}
+                    <strong>Palautettu:</strong>{' '}
                     {new Date(info.returned_date).toLocaleDateString()}
                   </p>
                 </div>
@@ -127,25 +126,27 @@ const OrderDetails = () => {
       <div className="space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle>Contracts</CardTitle>
+            <CardTitle>Sopimukset</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {contracts.length === 0 ? (
-              <p className="text-muted-foreground">No contracts submitted.</p>
+              <p className="text-muted-foreground">Ei sopimuksia.</p>
             ) : (
               contracts.map((con) => (
                 <div key={con.id} className="border rounded p-2">
                   <p>
-                    <strong>File:</strong> {con.file_name}
+                    <strong>Tiedosto:</strong> {con.file_name}
                   </p>
                   <p>
-                    <strong>Returned:</strong> {con.is_returned ? 'Yes' : 'No'}
+                    <strong>Palautettu:</strong>{' '}
+                    {con.is_returned ? 'Kyllä' : 'Ei'}
                   </p>
                   <p>
-                    <strong>Signed:</strong> {con.is_signed ? 'Yes' : 'No'}
+                    <strong>Allekirjoitettu:</strong>{' '}
+                    {con.is_signed ? 'Kyllä' : 'Ei'}
                   </p>
                   <p>
-                    <strong>Returned Date:</strong>{' '}
+                    <strong>Palautettu:</strong>{' '}
                     {new Date(con.returned_date).toLocaleDateString()}
                   </p>
                   <a
@@ -154,7 +155,7 @@ const OrderDetails = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Download
+                    Lataa
                   </a>
                 </div>
               ))
@@ -167,37 +168,39 @@ const OrderDetails = () => {
       <div className="space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle>Invoices</CardTitle>
+            <CardTitle>Laskut</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {invoices.length === 0 ? (
-              <p className="text-muted-foreground">No invoices submitted.</p>
+              <p className="text-muted-foreground">Ei laskuja.</p>
             ) : (
               invoices.map((invoice) => (
                 <div key={invoice.id} className="border rounded p-2">
                   <p>
-                    <strong>Reference:</strong> {invoice.reference}
+                    <strong>Viite:</strong> {invoice.reference}
                   </p>
                   <p>
-                    <strong>Sum:</strong> €{invoice.sum.toFixed(2)}
+                    <strong>Summa:</strong> €{invoice.sum.toFixed(2)}
                   </p>
                   <p>
-                    <strong>Invoice Date:</strong>{' '}
+                    <strong>Laskun päivämäärä:</strong>{' '}
                     {new Date(invoice.invoice_date).toLocaleDateString()}
                   </p>
                   <p>
-                    <strong>Due Date:</strong>{' '}
+                    <strong>Eräpäivä:</strong>{' '}
                     {new Date(invoice.due_date).toLocaleDateString()}
                   </p>
                   <p>
-                    <strong>Sent:</strong> {invoice.is_sent ? 'Yes' : 'No'}
+                    <strong>Lähetetty:</strong>{' '}
+                    {invoice.is_sent ? 'Kyllä' : 'Ei'}
                   </p>
                   <p>
-                    <strong>Paid:</strong> {invoice.is_paid ? 'Yes' : 'No'}
+                    <strong>Maksettu:</strong>{' '}
+                    {invoice.is_paid ? 'Kyllä' : 'Ei'}
                   </p>
                   {invoice.special_info && (
                     <p>
-                      <strong>Special Info:</strong> {invoice.special_info}
+                      <strong>Erikoistiedot:</strong> {invoice.special_info}
                     </p>
                   )}
                 </div>

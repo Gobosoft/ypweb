@@ -55,13 +55,13 @@ const CreateOrderRowForm = () => {
           <h1 className="text-2xl font-bold">{i18n.t('addOrderRow')}</h1>
 
           <div className="space-y-1">
-            <Label htmlFor="product_id">Product</Label>
+            <Label htmlFor="product_id">Tuote</Label>
             <Select
               value={values.product_id}
               onValueChange={(val) => setFieldValue('product_id', val)}
             >
               <SelectTrigger id="product_id">
-                <SelectValue placeholder="Select product" />
+                <SelectValue placeholder="Valitse tuote" />
               </SelectTrigger>
               <SelectContent>
                 {products.map((product) => (
@@ -77,7 +77,7 @@ const CreateOrderRowForm = () => {
           </div>
 
           <div>
-            <Label htmlFor="amount">Amount</Label>
+            <Label htmlFor="amount">Määrä</Label>
             <Input
               name="amount"
               type="number"
@@ -91,7 +91,7 @@ const CreateOrderRowForm = () => {
           </div>
 
           <div>
-            <Label htmlFor="unit_price">Unit Price (€)</Label>
+            <Label htmlFor="unit_price">Yksikköhinta (€)</Label>
             <Input
               name="unit_price"
               type="number"
@@ -105,7 +105,7 @@ const CreateOrderRowForm = () => {
           </div>
 
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Adding...' : 'Add Order Row'}
+            {isSubmitting ? 'Lisätään...' : 'Lisää tilausrivi'}
           </Button>
         </Form>
       )}

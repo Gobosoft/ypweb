@@ -7,8 +7,14 @@ import UpdateOrderForm from 'src/components/Order/UpdateOrderForm'
 const SingleOrderView = () => {
   return (
     <div className="p-6">
-      <UpdateOrderForm />
-      <CreateOrderRowForm />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div>
+          <UpdateOrderForm />
+        </div>
+        <div>
+          <CreateOrderRowForm />
+        </div>
+      </div>
       <OrderRowsTable />
       <OrderDetails />
     </div>

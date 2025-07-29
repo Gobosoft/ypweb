@@ -69,10 +69,6 @@ const RegisterForm = () => {
           {({ isSubmitting, handleSubmit, setFieldValue, values }) => {
             return (
               <Form onSubmit={handleSubmit}>
-                <CardTitle className="mb-2 text-center">
-                  {i18n.t('register')}
-                </CardTitle>
-                <Separator />
                 <CardContent className="flex flex-col gap-3 w-full my-2">
                   <Label>{i18n.t('name')}</Label>
                   <Field
@@ -149,12 +145,8 @@ const RegisterForm = () => {
                   <FormErrorMessage name="role" />
 
                   <Button type="submit" disabled={isSubmitting}>
-                    {i18n.t('register')}
+                    Lisää käyttäjä
                   </Button>
-                  <Link to={'/'}>
-                    {i18n.t('alreadyHaveUser')}{' '}
-                    <span className="underline">{i18n.t('logIn')}</span>
-                  </Link>
                 </CardContent>
               </Form>
             )

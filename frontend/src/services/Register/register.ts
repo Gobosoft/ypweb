@@ -4,7 +4,7 @@ import i18n from '../../i18n'
 import axiosInstance from '../../axiosConfig'
 import { UserRole } from 'src/lib/types'
 
-const baseUrl = '/api/admin/register'
+const baseUrl = '/api/auth/register'
 
 interface UserData {
   name: string

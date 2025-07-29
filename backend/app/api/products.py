@@ -19,7 +19,7 @@ async def create_product_endpoint(
 ):
     return await create_product(product_data=product_data, db=db)
 
-@router.get("/all", response_model=list[ProductResponse])
+@router.get("/all")
 async def get_all_products_endpoint(db: AsyncSession = Depends(get_db)):
-    orders = await get_all_products(db)
-    return orders
+    products = await get_all_products(db)
+    return products

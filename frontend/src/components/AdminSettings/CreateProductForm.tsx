@@ -57,7 +57,7 @@ const CreateProductForm = () => {
       {({ values, handleChange, handleBlur, setFieldValue, isSubmitting }) => (
         <Form className="space-y-4">
           <div>
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Nimi</label>
             <Input
               id="name"
               name="name"
@@ -69,7 +69,7 @@ const CreateProductForm = () => {
           </div>
 
           <div>
-            <label htmlFor="price">Price</label>
+            <label htmlFor="price">Hinta</label>
             <Input
               id="price"
               name="price"
@@ -82,7 +82,7 @@ const CreateProductForm = () => {
           </div>
 
           <div>
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description">Kuvaus</label>
             <Textarea
               id="description"
               name="description"
@@ -101,17 +101,17 @@ const CreateProductForm = () => {
                 setFieldValue('is_active', checked)
               }
             />
-            <label htmlFor="is_active">Active</label>
+            <label htmlFor="is_active">Aktiivinen</label>
           </div>
 
           <div>
-            <label htmlFor="exhibition_year_id">Exhibition Year</label>
+            <label htmlFor="exhibition_year_id">Messuvuosi</label>
             <Select
               onValueChange={(val) => setFieldValue('exhibition_year_id', val)}
               value={values.exhibition_year_id}
             >
               <SelectTrigger id="exhibition_year_id">
-                <SelectValue placeholder="Select Exhibition Year" />
+                <SelectValue placeholder="Valitse messuvuosi" />
               </SelectTrigger>
               <SelectContent>
                 {exhibitionYears.map((year) => (
@@ -125,7 +125,7 @@ const CreateProductForm = () => {
           </div>
 
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting...' : 'Create Product'}
+            {isSubmitting ? 'Lähetetään...' : 'Luo uusi tuote'}
           </Button>
         </Form>
       )}

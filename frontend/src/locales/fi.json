@@ -48,5 +48,11 @@
   "orders": "Tilaukset",
   "profile": {
     "profile": "Profiili"
-  }
+  },
+  "dontHaveUserYet": "Eikö sinulla ole vielä käyttäjää?",
+  "forgotPassword": "Unohdin salasanan",
+  "startDate": "Alkupäivä",
+  "year": "Vuosi",
+  "endDate": "Päättymispäivä",
+  "create": "Luo"
 }

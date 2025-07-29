@@ -10,29 +10,41 @@ import {
 } from 'src/components/ui/table'
 import { Badge } from 'src/components/ui/badge'
 import { Product } from 'src/lib/types'
+import { Button } from '../ui/button'
+import { RefreshCcw } from 'lucide-react'
 
 const ProductsList = () => {
   const [products, setProducts] = useState<Product[]>([])
 
+  const fetchData = async () => {
+    const result = await productsService.getAllProducts()
+    setProducts(result)
+  }
+
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await productsService.getAllProducts()
-      setProducts(result)
-    }
     fetchData()
   }, [])
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-semibold mb-4">All Products</h1>
+    <div className="p-1">
+      <div className="my-2">
+        <Button
+          variant={'secondary'}
+          onClick={async () => {
+            await fetchData()
+          }}
+        >
+          <RefreshCcw />
+        </Button>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Price (€)</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Active</TableHead>
-            <TableHead>Exhibition Year ID</TableHead>
+            <TableHead>Nimi</TableHead>
+            <TableHead>Hinta (€)</TableHead>
+            <TableHead>Kuvaus</TableHead>
+            <TableHead>Aktiivisuus</TableHead>
+            <TableHead>Messuvuosi</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -43,12 +55,12 @@ const ProductsList = () => {
               <TableCell>{product.description || '-'}</TableCell>
               <TableCell>
                 {product.is_active ? (
-                  <Badge variant="default">Active</Badge>
+                  <Badge variant="default">Aktiivinen</Badge>
                 ) : (
-                  <Badge variant="destructive">Inactive</Badge>
+                  <Badge variant="destructive">Inaktiivinen</Badge>
                 )}
               </TableCell>
-              <TableCell>{product.exhibition_year_id}</TableCell>
+              <TableCell>{product.exhibition_year?.year}</TableCell>
             </TableRow>
           ))}
         </TableBody>

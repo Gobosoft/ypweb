@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import BuildingsList from 'src/components/AdminSettings/BuildingsList'
 import CreateExhibitionYearForm from 'src/components/AdminSettings/CreateExhibitionYearForm'
 import CreateProductForm from 'src/components/AdminSettings/CreateProductForm'
 import ExhibitionYearList from 'src/components/AdminSettings/ExhibitionYearList'
@@ -68,6 +69,9 @@ const AdminSettings = () => {
       </Dialog>
       <div className="my-4">
         <ExhibitionYearList />
+      </div>
+      <div className="my-4">
+        <BuildingsList />
       </div>
     </div>
   )

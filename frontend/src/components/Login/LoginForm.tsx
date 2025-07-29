@@ -126,10 +126,10 @@ const LoginForm = ({ onLoginSuccess }: LoginProps) => {
           </Card>
         </div>
       )}
-      <div className="grid lg:grid-cols-2 grid-cols-1 w-full gap-2 mt-3">
+      <div>
         <div className="flex flex-col gap-2 w-full col-span-1 items-center">
           <h1 className="sm:text-4xl text-2xl mb-2 text-center">
-            {i18n.t('gobosoftMapper')}
+            {i18n.t('YPWEB')}
           </h1>
           <Card className="w-full max-w-md">
             <CardTitle className="text-center">{i18n.t('logIn')}</CardTitle>
