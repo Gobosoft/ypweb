@@ -10,25 +10,27 @@ import {
 } from 'src/components/ui/table'
 import { OrderRow } from 'src/lib/types'
 import ordersService from 'src/services/Orders/orders'
+import { Button } from '../ui/button'
+import { RefreshCcw } from 'lucide-react'
 
 const OrderRowsTable = () => {
   const { orderId } = useParams<{ orderId: string }>()
   const [orderRows, setOrderRows] = useState<OrderRow[]>([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const fetchOrderRows = async () => {
-      if (!orderId) return
-      try {
-        const data = await ordersService.getOrderRowsByOrderId(orderId)
-        setOrderRows(data.data)
-      } catch (error) {
-        console.error('Failed to fetch order rows:', error)
-      } finally {
-        setLoading(false)
-      }
+  const fetchOrderRows = async () => {
+    if (!orderId) return
+    try {
+      const data = await ordersService.getOrderRowsByOrderId(orderId)
+      setOrderRows(data.data)
+    } catch (error) {
+      console.error('Failed to fetch order rows:', error)
+    } finally {
+      setLoading(false)
     }
+  }
 
+  useEffect(() => {
     fetchOrderRows()
   }, [orderId])
 
@@ -38,27 +40,35 @@ const OrderRowsTable = () => {
 
   if (orderRows.length === 0) {
     return (
-      <p className="text-muted-foreground">
-        No order rows found for this order.
-      </p>
+      <p className="text-muted-foreground">Ei tilausrivejä tässä tilauksessa</p>
     )
   }
 
   return (
     <div className="overflow-x-auto">
-      <h2>Tilausrivit</h2>
+      <h2 className="my-2">Tilausrivit</h2>
+      <Button
+        variant={'secondary'}
+        onClick={async () => {
+          await fetchOrderRows()
+        }}
+      >
+        <RefreshCcw />
+      </Button>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Product ID</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>Unit Price</TableHead>
-            <TableHead>Total</TableHead>
+            <TableHead>Tuotteen nimi</TableHead>
+            <TableHead>Tuote ID</TableHead>
+            <TableHead>Määrä</TableHead>
+            <TableHead>Yksikköhinta</TableHead>
+            <TableHead>Yhteensä</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {orderRows.map((row) => (
             <TableRow key={row.id}>
+              <TableCell>{row.product?.name}</TableCell>
               <TableCell>{row.product_id}</TableCell>
               <TableCell>{row.amount}</TableCell>
               <TableCell>{row.unit_price.toFixed(2)} €</TableCell>

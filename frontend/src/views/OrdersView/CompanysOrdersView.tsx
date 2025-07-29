@@ -33,15 +33,15 @@ const CompanysOrdersView = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Company Orders</h2>
+      <h2 className="text-xl font-bold mb-4">Yrityksen tilaukset</h2>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
-            <TableHead>Order Date</TableHead>
-            <TableHead>Type</TableHead>
+            <TableHead>Tilauspäivä</TableHead>
+            <TableHead>Tyyppi</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Attendance</TableHead>
+            <TableHead>Osallistuminen</TableHead>
             <TableHead>Portal UUID</TableHead>
           </TableRow>
         </TableHeader>
@@ -56,7 +56,9 @@ const CompanysOrdersView = () => {
               <TableCell>{order.order_date}</TableCell>
               <TableCell>{order.order_type}</TableCell>
               <TableCell>{order.status}</TableCell>
-              <TableCell>{order.attendance_confirmed ? 'Yes' : 'No'}</TableCell>
+              <TableCell>
+                {order.attendance_confirmed ? 'Kyllä' : 'Ei'}
+              </TableCell>
               <TableCell>{order.portal_uuid}</TableCell>
             </TableRow>
           ))}

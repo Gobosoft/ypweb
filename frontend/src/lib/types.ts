@@ -30,6 +30,12 @@ export interface ExhibitionYear {
   is_active: boolean
 }
 
+export interface Building {
+  id: string
+  name: string
+  location: string
+}
+
 export enum CompanyStatus {
   RESERVED = 'reserved',
   UNRESERVED = 'unreserved',
@@ -128,6 +134,7 @@ export type Product = {
   description?: string
   is_active: boolean
   exhibition_year_id: string
+  exhibition_year?: ExhibitionYear
 }
 
 export interface OrderRow {
@@ -136,6 +143,7 @@ export interface OrderRow {
   product_id: string
   amount: number
   unit_price: number
+  product?: Product
 }
 
 export type Material = {

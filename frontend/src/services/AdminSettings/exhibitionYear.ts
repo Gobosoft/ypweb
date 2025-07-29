@@ -1,4 +1,4 @@
-import { ExhibitionYear } from 'src/lib/types'
+import { Building, ExhibitionYear } from 'src/lib/types'
 import axiosInstance from '../../axiosConfig'
 
 const baseUrl = '/api/admin'
@@ -11,17 +11,23 @@ const createExhibitionYear = (data: {
   return axiosInstance.post(`${baseUrl}/exhibition-years`, data)
 }
 
-export const fetchExhibitionYears = async (): Promise<ExhibitionYear[]> => {
+const fetchExhibitionYears = async (): Promise<ExhibitionYear[]> => {
   const response = await axiosInstance.get(`${baseUrl}/exhibition-years`)
   return response.data
 }
 
-export const activateExhibitionYear = async (id: number): Promise<void> => {
+const activateExhibitionYear = async (id: number): Promise<void> => {
   await axiosInstance.post(`${baseUrl}/exhibition-years/${id}/activate`)
+}
+
+const fetchBuildings = async (): Promise<Building[]> => {
+  const response = await axiosInstance.get(`${baseUrl}/buildings`)
+  return response.data
 }
 
 export default {
   createExhibitionYear,
   fetchExhibitionYears,
   activateExhibitionYear,
+  fetchBuildings,
 }

@@ -86,7 +86,7 @@ async def create_order_row_endpoint(
     ):
     return await create_order_row(order_id=order_id, payload=payload, db=db)
 
-@router.get("/{order_id}/order-rows", response_model=list[OrderRowRead])
+@router.get("/{order_id}/order-rows")
 async def get_order_rows_by_order_id_endpoint(order_id: UUID, db: AsyncSession = Depends(get_db)):
     return await get_order_rows_by_order_id(order_id=order_id, db=db)
 

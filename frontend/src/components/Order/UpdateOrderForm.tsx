@@ -53,14 +53,14 @@ const UpdateOrderForm = () => {
     }
   }
 
-  if (loading || !order) return <div>Loading...</div>
+  if (loading || !order) return <div>Ladataan...</div>
 
   return (
     <form onSubmit={handleSubmit} className="p-6 space-y-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold">Update Order {order.id}</h1>
+      <h1 className="text-2xl font-bold">Muokkaa tilausta {order.id}</h1>
 
       <div>
-        <Label htmlFor="order_date">Order Date</Label>
+        <Label htmlFor="order_date">Tilauspäivä</Label>
         <Input
           type="date"
           id="order_date"
@@ -70,13 +70,13 @@ const UpdateOrderForm = () => {
       </div>
 
       <div>
-        <Label htmlFor="order_type">Order Type</Label>
+        <Label htmlFor="order_type">Tilauksen tyyppi</Label>
         <Select
           value={order.order_type}
           onValueChange={(val) => handleChange('order_type', val as OrderType)}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select type" />
+            <SelectValue placeholder="Valitse tyyppi" />
           </SelectTrigger>
           <SelectContent>
             {Object.values(OrderType).map((type) => (
@@ -117,7 +117,7 @@ const UpdateOrderForm = () => {
       </div>
 
       <div>
-        <Label htmlFor="attendance_confirmed">Attendance Confirmed</Label>
+        <Label htmlFor="attendance_confirmed">Osallistuminen vahvistettu</Label>
         <Select
           value={String(order.attendance_confirmed)}
           onValueChange={(val) =>
@@ -128,13 +128,13 @@ const UpdateOrderForm = () => {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="true">Yes</SelectItem>
-            <SelectItem value="false">No</SelectItem>
+            <SelectItem value="true">Kyllä</SelectItem>
+            <SelectItem value="false">Ei</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      <Button type="submit">Update Order</Button>
+      <Button type="submit">Tallenna</Button>
     </form>
   )
 }

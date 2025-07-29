@@ -6,6 +6,7 @@ from app.schemas.orders import (OrderCreate, OrderUpdate, ContractCreate, Materi
 from fastapi import HTTPException
 from sqlalchemy.future import select
 from uuid import UUID
+from sqlalchemy.orm import selectinload
 
 async def create_order(order_data: OrderCreate, db: AsyncSession) -> Order:
 
@@ -137,7 +138,11 @@ async def create_order_row(order_id: UUID, payload: OrderRowCreate, db: AsyncSes
 async def get_order_rows_by_order_id(order_id: UUID, db: AsyncSession):
     await get_order_or_404(order_id, db)
 
-    result = await db.execute(select(OrderRow).where(OrderRow.order_id == order_id))
+    result = await db.execute(
+        select(OrderRow)
+        .where(OrderRow.order_id == order_id)
+        .options(selectinload(OrderRow.product))
+    )
     order_rows = result.scalars().all()
     return order_rows
 

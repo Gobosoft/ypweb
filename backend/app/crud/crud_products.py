@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.products import (ProductCreate)
 from fastapi import HTTPException
 from sqlalchemy.future import select
-from uuid import UUID
+from sqlalchemy.orm import selectinload
 
 async def create_product(
     product_data: ProductCreate,
@@ -28,6 +28,8 @@ async def create_product(
     return product
 
 async def get_all_products(db: AsyncSession):
-    result = await db.execute(select(Product))
+    result = await db.execute(
+        select(Product).options(selectinload(Product.exhibition_year))
+    )
     return result.scalars().all()
 
